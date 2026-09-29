@@ -8,9 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Library Export PDF & Chart (Grafik) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -132,6 +129,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Lengkap</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                             </tr>
                         </thead>
@@ -152,6 +150,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Instruktur</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kesiapan Bertugas</th>
                             </tr>
                         </thead>
@@ -187,9 +186,16 @@
         <!-- DASHBOARD ADMIN -->
         <!-- ======================= -->
         <section id="adminView" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex flex-col sm:flex-row justify-between bg-white p-5 rounded-xl shadow-sm border border-gray-100 items-center">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
-                <button onclick="openModal('add')" class="mt-3 sm:mt-0 bg-imm-red hover:bg-red-800 text-white px-4 py-2 rounded-lg font-medium shadow-sm"><i class="fas fa-plus mr-2"></i> Tambah Kader</button>
+                <div class="flex space-x-3 w-full sm:w-auto mt-3 sm:mt-0">
+                    <button onclick="exportToCSV()" class="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center">
+                        <i class="fas fa-file-excel mr-2"></i> Export Data
+                    </button>
+                    <button onclick="openModal('add')" class="flex-1 sm:flex-none bg-imm-red hover:bg-red-800 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center">
+                        <i class="fas fa-plus mr-2"></i> Tambah Kader
+                    </button>
+                </div>
             </div>
 
             <!-- Score Cards Admin (Terintegrasi) -->
@@ -247,8 +253,8 @@
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Lengkap</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
+                                <th class="px-4 py-3 text-left">Kader Tahun</th>
                                 <th class="px-4 py-3 text-left">Status</th>
-                                <th class="px-4 py-3 text-left">Perkaderan</th>
                             </tr>
                         </thead>
                         <tbody id="adminTableBody" class="bg-white divide-y divide-gray-200"></tbody>
@@ -266,6 +272,7 @@
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Instruktur</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
+                                <th class="px-4 py-3 text-left">Kader Tahun</th>
                                 <th class="px-4 py-3 text-left">Kesiapan Bertugas</th>
                             </tr>
                         </thead>
@@ -318,6 +325,10 @@
                             <input type="text" id="komisariatLainnya" placeholder="Ketik nama komisariat..." class="w-full px-3 py-2 border rounded mt-2 hidden">
                         </div>
                         <div>
+                            <label class="text-sm font-semibold">Kader Tahun *</label>
+                            <input type="number" id="kaderTahun" placeholder="Cth: 2023" required class="w-full px-3 py-2 border rounded">
+                        </div>
+                        <div>
                             <label class="text-sm font-semibold">Status Keanggotaan *</label>
                             <select id="status" required class="w-full px-3 py-2 border rounded bg-white">
                                 <option value="Aktif">Aktif</option>
@@ -343,7 +354,7 @@
                                 <option value="PIP">PIP (Paripurna)</option>
                             </select>
                         </div>
-                        <div class="md:col-span-2">
+                        <div>
                             <label class="text-sm font-semibold text-green-700">Identifikasi Instruktur</label>
                             <select id="statusInstruktur" class="w-full px-3 py-2 border border-green-300 rounded bg-green-50">
                                 <option value="">-- Bukan Instruktur --</option>
@@ -361,24 +372,19 @@
         </div>
     </div>
 
-    <!-- Modal Popup Detail & Area Cetak PDF (Versi Rapi) -->
+    <!-- Modal Popup Detail (Download PDF dihapus) -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
-        
-        <!-- Bungkus area print dengan struktur standard (tanpa overlap/margin minus) agar aman di PDF -->
-        <div id="printableProfile" class="bg-white rounded-xl w-full max-w-sm mx-auto overflow-hidden text-gray-800 shadow-2xl" onclick="event.stopPropagation()">
-            
-            <!-- Header Kartu -->
+        <div class="bg-white rounded-xl w-full max-w-sm mx-auto overflow-hidden text-gray-800 shadow-2xl" onclick="event.stopPropagation()">
             <div class="bg-imm-red p-4 text-center">
                 <h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2>
                 <p class="text-red-200 text-xs mt-1">PC IMM JAKARTA SELATAN</p>
             </div>
             
-            <!-- Body Kartu -->
             <div class="p-6 flex flex-col items-center">
                 <img id="detailFoto" src="https://via.placeholder.com/150" alt="Foto Kader" class="w-24 h-24 rounded-full object-cover border-4 border-gray-100 shadow-sm mb-4">
                 
                 <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
-                <p class="text-sm font-bold text-imm-red text-center mt-1" id="detailKomisariat">Komisariat</p>
+                <p class="text-sm font-bold text-imm-red text-center mt-1"><span id="detailKomisariat">Komisariat</span> (<span id="detailKaderTahun">-</span>)</p>
                 <p class="text-xs text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
                 
                 <div class="w-full mt-6 space-y-2 text-sm border-t border-gray-200 pt-4">
@@ -397,10 +403,8 @@
                 </div>
             </div>
             
-            <!-- Tombol Action -->
-            <div id="modalActionBtns" class="flex gap-2 p-4 bg-gray-50 border-t border-gray-200">
-                <button onclick="downloadPDF()" class="flex-1 bg-imm-red text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-red-800 transition shadow-sm"><i class="fas fa-file-pdf mr-1"></i> Unduh PDF</button>
-                <button onclick="closeDetailModal()" class="flex-1 bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup</button>
+            <div class="p-4 bg-gray-50 border-t border-gray-200">
+                <button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup</button>
             </div>
         </div>
     </div>
@@ -478,7 +482,6 @@
             reader.readAsDataURL(file);
         }
 
-        // FUNGSI UPDATE CHART.JS
         function updateChart() {
             const ctx = document.getElementById('komisariatChart').getContext('2d');
             
@@ -529,7 +532,6 @@
             const komisariat = [...new Set(db.kader.map(k => k.Komisariat))].length;
             const instruktur = instrukturData.length;
 
-            // Scorecard Publik & Admin
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statAktif').innerText = aktif;
             document.getElementById('statKomisariat').innerText = komisariat;
@@ -540,7 +542,6 @@
             document.getElementById('adminStatKomisariat').innerText = komisariat;
             document.getElementById('adminStatInstruktur').innerText = instruktur;
 
-            // Render komponen lainnya
             updateChart();
             renderPublicTables();
             if(isLoggedIn) renderAdminTable();
@@ -598,11 +599,12 @@
                     <tr class="hover:bg-gray-100 transition cursor-pointer" onclick="showDetail('${k.ID}')">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${k.Nama}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.Komisariat}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.KaderTahun || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ${badge}">${k.Status}</span></td>
                     </tr>`;
             });
             document.getElementById('kaderShowMoreBtn').style.display = filteredKader.length > limitKader ? 'block' : 'none';
-            if(slicedKader.length === 0) tKader.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
+            if(slicedKader.length === 0) tKader.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
             const tInstruktur = document.getElementById('publicInstrukturBody');
             tInstruktur.innerHTML = '';
@@ -613,11 +615,12 @@
                     <tr class="hover:bg-gray-100 transition cursor-pointer" onclick="showDetail('${k.ID}')">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${k.Nama}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.Komisariat}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.KaderTahun || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
             document.getElementById('instrukturShowMoreBtn').style.display = filteredInstruktur.length > limitInstruktur ? 'block' : 'none';
-            if(slicedInstruktur.length === 0) tInstruktur.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(slicedInstruktur.length === 0) tInstruktur.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function loadMore(type) {
@@ -633,6 +636,7 @@
             document.getElementById('detailFoto').src = data.Foto && data.Foto.length > 10 ? data.Foto : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
             document.getElementById('detailNama').innerText = data.Nama;
             document.getElementById('detailKomisariat').innerText = data.Komisariat;
+            document.getElementById('detailKaderTahun').innerText = data.KaderTahun || '-';
             document.getElementById('detailNIA').innerText = data.NIA || '-';
             document.getElementById('detailStatus').innerText = data.Status;
             document.getElementById('detailUtama').innerText = data.Pelatihan || 'Belum DAD';
@@ -642,36 +646,31 @@
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
-        // FUNGSI DOWNLOAD PDF YANG DIPERBAIKI
-        function downloadPDF() {
-            const element = document.getElementById('printableProfile');
-            const btns = document.getElementById('modalActionBtns');
-            const namaKader = document.getElementById('detailNama').innerText;
+        // FUNGSI EXPORT CSV DATA KADER
+        function exportToCSV() {
+            if(db.kader.length === 0) {
+                showToast('Tidak ada data untuk diexport', 'warning');
+                return;
+            }
+            const headers = ['ID', 'Nama', 'Kader Tahun', 'NIA', 'Nomor WA', 'Email', 'Alamat', 'Komisariat', 'Status', 'Pelatihan Utama', 'Perkaderan Khusus', 'Status Instruktur'];
+            const rows = db.kader.map(k => [
+                `"${k.ID || ''}"`, `"${k.Nama || ''}"`, `"${k.KaderTahun || ''}"`, `"${k.NIA || ''}"`, `"${k.WA || ''}"`, `"${k.Email || ''}"`, 
+                `"${k.Alamat || ''}"`, `"${k.Komisariat || ''}"`, `"${k.Status || ''}"`, `"${k.Pelatihan || ''}"`, 
+                `"${k.PerkaderanKhusus || ''}"`, `"${k.StatusInstruktur || ''}"`
+            ]);
             
-            // Sembunyikan bayangan dan tombol agar rapi di print
-            btns.style.display = 'none';
-            element.classList.remove('shadow-2xl');
-            
-            const opt = {
-                margin:       0.5,
-                filename:     `Profil_Kader_IMM_${namaKader.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save().then(() => {
-                btns.style.display = 'flex';
-                element.classList.add('shadow-2xl');
-                showToast('PDF berhasil diunduh', 'success');
-            }).catch(err => {
-                btns.style.display = 'flex';
-                element.classList.add('shadow-2xl');
-                Swal.fire("Error", "Gagal membuat PDF.", "error");
-            });
+            let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
+                
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Export_Data_Kader_IMM_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('File CSV berhasil diunduh', 'success');
         }
 
-        // TABEL ADMIN
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
@@ -693,8 +692,8 @@
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm">${k.Status}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Pelatihan || '-'}</td>
                     </tr>`;
             });
             if(filteredKader.length === 0) tbodyKader.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
@@ -712,10 +711,11 @@
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
-            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="4" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function toggleKomisariatLainnya(val) {
@@ -750,6 +750,7 @@
                 document.getElementById('alamat').value = data.Alamat || '';
                 document.getElementById('status').value = data.Status || '';
                 document.getElementById('nia').value = data.NIA || '';
+                document.getElementById('kaderTahun').value = data.KaderTahun || '';
                 document.getElementById('pelatihan').value = data.Pelatihan || '';
                 document.getElementById('perkaderanKhusus').value = data.PerkaderanKhusus || '';
                 document.getElementById('statusInstruktur').value = data.StatusInstruktur || '';
@@ -794,6 +795,7 @@
                 komisariat: finalKomisariat,
                 status: document.getElementById('status').value,
                 nia: document.getElementById('nia').value,
+                kaderTahun: document.getElementById('kaderTahun').value,
                 pelatihan: document.getElementById('pelatihan').value,
                 foto: document.getElementById('fotoBase64').value,
                 perkaderanKhusus: document.getElementById('perkaderanKhusus').value,
