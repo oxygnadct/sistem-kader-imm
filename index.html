@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Library Chart.js & SheetJS (Untuk baca/tulis Excel) -->
+    <!-- Library Chart.js & SheetJS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
@@ -195,7 +195,6 @@
                     <button onclick="exportToCSV()" class="flex-1 lg:flex-none bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center text-sm">
                         <i class="fas fa-download mr-2"></i> Export Data
                     </button>
-                    <!-- Tombol Upload Excel Baru -->
                     <button onclick="openExcelModal()" class="flex-1 lg:flex-none bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center text-sm">
                         <i class="fas fa-file-excel mr-2"></i> Upload Excel
                     </button>
@@ -259,6 +258,8 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Lengkap</th>
+                                <th class="px-4 py-3 text-left">NIA</th>
+                                <th class="px-4 py-3 text-left">Email</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
                                 <th class="px-4 py-3 text-left">Kader Tahun</th>
                                 <th class="px-4 py-3 text-left">Status</th>
@@ -278,6 +279,8 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Instruktur</th>
+                                <th class="px-4 py-3 text-left">NIA</th>
+                                <th class="px-4 py-3 text-left">Email</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
                                 <th class="px-4 py-3 text-left">Kader Tahun</th>
                                 <th class="px-4 py-3 text-left">Kesiapan Bertugas</th>
@@ -347,6 +350,8 @@
                                     <option value="">-- Pilih Status --</option>
                                     <option value="Aktif Komisariat">Aktif Komisariat</option>
                                     <option value="Aktif Cabang">Aktif Cabang</option>
+                                    <option value="Aktif Lembaga Semi Otonom (LSO)">Aktif Lembaga Semi Otonom (LSO)</option>
+                                    <option value="Aktif Lembaga Otonom (LO)">Aktif Lembaga Otonom (LO)</option>
                                     <option value="Pasif">Pasif</option>
                                     <option value="Kader">Kader</option>
                                     <option value="Alumni">Alumni</option>
@@ -486,7 +491,7 @@
         let limitKader = 7;
         let limitInstruktur = 7;
         let chartInstance = null;
-        let parsedExcelData = []; // Array penampung data Excel
+        let parsedExcelData = []; 
         
         document.addEventListener("DOMContentLoaded", () => { loadData(); });
 
@@ -569,7 +574,7 @@
         function renderUI() {
             const instrukturData = db.kader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
             const total = db.kader.length;
-            const aktif = db.kader.filter(k => k.Status === 'Aktif Komisariat' || k.Status === 'Aktif Cabang').length;
+            const aktif = db.kader.filter(k => k.Status && k.Status.includes('Aktif')).length;
             const komisariat = [...new Set(db.kader.map(k => k.Komisariat))].length;
             const instruktur = instrukturData.length;
 
@@ -633,7 +638,7 @@
             tKader.innerHTML = '';
             let slicedKader = filteredKader.slice(0, limitKader);
             slicedKader.forEach(k => {
-                let badge = (k.Status === 'Aktif Komisariat' || k.Status === 'Aktif Cabang') ? 'bg-green-100 text-green-800' : (k.Status === 'Pasif' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800');
+                let badge = (k.Status && k.Status.includes('Aktif')) ? 'bg-green-100 text-green-800' : (k.Status === 'Pasif' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800');
                 tKader.innerHTML += `
                     <tr class="hover:bg-gray-100 transition cursor-pointer" onclick="showDetail('${k.ID}')">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${k.Nama}</td>
@@ -681,7 +686,7 @@
             document.getElementById('detailProgramStudi').innerText = data.ProgramStudi || '-';
             
             let displayStatus = data.Status;
-            if((data.Status === 'Aktif Komisariat' || data.Status === 'Aktif Cabang') && data.Bidang) {
+            if(data.Status && data.Status.includes('Aktif') && data.Bidang) {
                 displayStatus += ` (${data.JabatanBidang ? data.JabatanBidang + ' ' : ''}${data.Bidang})`;
             }
             document.getElementById('detailStatus').innerText = displayStatus;
@@ -713,7 +718,7 @@
         }
 
         // ======================================
-        // SISTEM BULK UPLOAD EXCEL (BARU)
+        // SISTEM BULK UPLOAD EXCEL
         // ======================================
         function openExcelModal() {
             parsedExcelData = [];
@@ -786,7 +791,6 @@
             }
 
             parsedExcelData.forEach((row, i) => {
-                // Validasi data wajib (jika kosong, border merah)
                 const errNama = row.nama === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 const errWa = row.wa === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 const errUniv = row.universitas === "" ? "border-red-500 bg-red-50" : "border-gray-200";
@@ -795,7 +799,6 @@
                 
                 if(!row.nama || !row.wa || !row.universitas || !row.komisariat || !row.kaderTahun) hasError = true;
 
-                // Input interaktif agar bisa diperbaiki langsung di layar
                 tbody.innerHTML += `
                     <tr>
                         <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${errNama}"></td>
@@ -814,10 +817,9 @@
             document.getElementById('btnSaveExcel').disabled = hasError;
         }
 
-        // Simpan editan langsung di tabel pratinjau
         function updateExcelData(index, field, value) {
             parsedExcelData[index][field] = value;
-            renderExcelPreview(); // Re-render untuk hilangkan warna merah jika sudah diisi
+            renderExcelPreview(); 
         }
 
         async function saveBulkExcel() {
@@ -842,7 +844,7 @@
             finally { btn.disabled = false; btn.innerHTML = 'Simpan Semua Data'; }
         }
 
-        // TABEL ADMIN NORMAL
+        // TABEL ADMIN NORMAL (Diperbarui dengan NIA & Email)
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
@@ -863,12 +865,14 @@
                             <button onclick="deleteKader('${k.ID}')" class="text-red-600 bg-red-50 p-1.5 rounded"><i class="fas fa-trash"></i></button>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.NIA || '-'}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm">${k.Status}</td>
                     </tr>`;
             });
-            if(filteredKader.length === 0) tbodyKader.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
+            if(filteredKader.length === 0) tbodyKader.innerHTML = `<tr><td colspan="7" class="px-4 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
             let filteredInstruktur = filteredKader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
             const tbodyInstruktur = document.getElementById('adminInstrukturBody');
@@ -882,12 +886,14 @@
                             <button onclick="deleteKader('${k.ID}')" class="text-red-600 bg-red-50 p-1.5 rounded"><i class="fas fa-trash"></i></button>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.NIA || '-'}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
-            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="7" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function toggleKomisariatLainnya(val) {
@@ -905,7 +911,7 @@
             const inputBidang = document.getElementById('bidang');
             const inputJabatan = document.getElementById('jabatanBidang');
 
-            if (val === 'Aktif Komisariat' || val === 'Aktif Cabang') {
+            if (val && val.includes('Aktif')) {
                 bidangField.classList.remove('hidden'); jabatanField.classList.remove('hidden');
                 inputBidang.required = true; inputJabatan.required = true;
             } else {
