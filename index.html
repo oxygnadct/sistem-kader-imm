@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Kader PC IMM Jakarta Selatan</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Library Export PDF & Chart (Grafik) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         .bg-imm-red { background-color: #c92a2a; }
         .text-imm-red { color: #c92a2a; }
@@ -37,7 +42,7 @@
                     <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo" class="h-10 w-10 bg-white rounded-full p-1 mr-3 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
                     <div class="flex flex-col justify-center">
                         <span class="font-bold text-lg hidden sm:block leading-tight">PC IMM Jakarta Selatan</span>
-                        <span class="text-xs text-imm-yellow hidden sm:block">Portal Database Kader</span>
+                        <span class="text-xs text-imm-yellow hidden sm:block">Portal Informasi Perkaderan</span>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -57,9 +62,17 @@
         <!-- TAMPILAN PUBLIK -->
         <!-- ======================= -->
         <section id="publicView" class="space-y-8">
-            <div class="text-center mb-8">
-                <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-28 w-28 mx-auto mb-5 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
+            <div class="text-center mb-6">
+                <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-24 w-24 mx-auto mb-4 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
                 <h1 class="text-3xl font-extrabold text-gray-900">Portal Statistik Kader</h1>
+            </div>
+
+            <!-- Chart Persebaran Komisariat -->
+            <div class="max-w-md mx-auto bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                <h3 class="text-center text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Sebaran Kader per Komisariat</h3>
+                <div class="relative h-48 w-full flex justify-center">
+                    <canvas id="komisariatChart"></canvas>
+                </div>
             </div>
 
             <!-- Score Cards Publik -->
@@ -243,7 +256,7 @@
                 </div>
             </div>
 
-            <!-- Tabel Instruktur Admin (Terintegrasi) -->
+            <!-- Tabel Instruktur Admin -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 mt-6">
                 <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-chalkboard-teacher mr-2 text-green-600"></i>Master Data Instruktur</h2></div>
                 <div class="overflow-x-auto">
@@ -348,40 +361,46 @@
         </div>
     </div>
 
-    <!-- Modal Popup Detail & Area Cetak PDF -->
+    <!-- Modal Popup Detail & Area Cetak PDF (Versi Rapi) -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
-        <div id="printableProfile" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden" onclick="event.stopPropagation()">
-            <div class="bg-imm-red h-24 relative flex items-center justify-center">
-                <p class="text-white/30 text-xs font-bold absolute top-2 right-4">PC IMM JAKARTA SELATAN</p>
+        
+        <!-- Bungkus area print dengan struktur standard (tanpa overlap/margin minus) agar aman di PDF -->
+        <div id="printableProfile" class="bg-white rounded-xl w-full max-w-sm mx-auto overflow-hidden text-gray-800 shadow-2xl" onclick="event.stopPropagation()">
+            
+            <!-- Header Kartu -->
+            <div class="bg-imm-red p-4 text-center">
+                <h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2>
+                <p class="text-red-200 text-xs mt-1">PC IMM JAKARTA SELATAN</p>
             </div>
-            <div class="px-6 pb-6 relative">
-                <div class="flex justify-center -mt-12 mb-3">
-                    <img id="detailFoto" src="https://via.placeholder.com/150" alt="Foto Kader" class="w-24 h-24 rounded-full border-4 border-white object-cover bg-gray-200">
-                </div>
-                <div class="text-center mb-5">
-                    <h3 class="text-xl font-bold text-gray-900" id="detailNama">Nama Kader</h3>
-                    <p class="text-sm text-imm-red font-semibold mt-1" id="detailKomisariat">Komisariat</p>
-                    <p class="text-xs text-gray-500 mt-1">NIA: <span id="detailNIA">-</span></p>
-                </div>
-                <div class="space-y-3 bg-gray-50 p-4 rounded-lg border border-gray-100 text-sm">
-                    <div class="flex justify-between border-b pb-2">
+            
+            <!-- Body Kartu -->
+            <div class="p-6 flex flex-col items-center">
+                <img id="detailFoto" src="https://via.placeholder.com/150" alt="Foto Kader" class="w-24 h-24 rounded-full object-cover border-4 border-gray-100 shadow-sm mb-4">
+                
+                <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
+                <p class="text-sm font-bold text-imm-red text-center mt-1" id="detailKomisariat">Komisariat</p>
+                <p class="text-xs text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
+                
+                <div class="w-full mt-6 space-y-2 text-sm border-t border-gray-200 pt-4">
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
                         <span class="text-gray-500">Status Aktif:</span>
-                        <span class="font-semibold text-gray-800 text-right" id="detailStatus">-</span>
+                        <span class="font-semibold" id="detailStatus">-</span>
                     </div>
-                    <div class="flex justify-between border-b pb-2">
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
                         <span class="text-gray-500">Perkaderan Utama:</span>
-                        <span class="font-semibold text-gray-800 text-right" id="detailUtama">-</span>
+                        <span class="font-semibold" id="detailUtama">-</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-500">Perkaderan Khusus:</span>
-                        <span class="font-semibold text-gray-800 text-right" id="detailKhusus">-</span>
+                        <span class="font-semibold" id="detailKhusus">-</span>
                     </div>
                 </div>
-                
-                <div id="modalActionBtns" class="flex gap-2 mt-6">
-                    <button onclick="downloadPDF()" class="flex-1 bg-imm-red text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-red-800 transition shadow-sm"><i class="fas fa-file-pdf mr-1"></i> Unduh PDF</button>
-                    <button onclick="closeDetailModal()" class="flex-1 bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup</button>
-                </div>
+            </div>
+            
+            <!-- Tombol Action -->
+            <div id="modalActionBtns" class="flex gap-2 p-4 bg-gray-50 border-t border-gray-200">
+                <button onclick="downloadPDF()" class="flex-1 bg-imm-red text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-red-800 transition shadow-sm"><i class="fas fa-file-pdf mr-1"></i> Unduh PDF</button>
+                <button onclick="closeDetailModal()" class="flex-1 bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup</button>
             </div>
         </div>
     </div>
@@ -393,6 +412,7 @@
         let isLoggedIn = false;
         let limitKader = 7;
         let limitInstruktur = 7;
+        let chartInstance = null;
         
         document.addEventListener("DOMContentLoaded", () => {
             loadData();
@@ -458,6 +478,50 @@
             reader.readAsDataURL(file);
         }
 
+        // FUNGSI UPDATE CHART.JS
+        function updateChart() {
+            const ctx = document.getElementById('komisariatChart').getContext('2d');
+            
+            const counts = {};
+            db.kader.forEach(k => {
+                const kom = k.Komisariat || 'Lainnya';
+                counts[kom] = (counts[kom] || 0) + 1;
+            });
+            
+            const labels = Object.keys(counts);
+            const data = Object.values(counts);
+            
+            if (chartInstance) {
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.update();
+            } else {
+                chartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                '#c92a2a', '#fcc419', '#3b82f6', '#10b981', '#8b5cf6', '#f97316', '#64748b'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { font: { size: 11, family: 'sans-serif' } }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
         function renderUI() {
             const instrukturData = db.kader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
             const total = db.kader.length;
@@ -465,18 +529,19 @@
             const komisariat = [...new Set(db.kader.map(k => k.Komisariat))].length;
             const instruktur = instrukturData.length;
 
-            // Scorecard Publik
+            // Scorecard Publik & Admin
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statAktif').innerText = aktif;
             document.getElementById('statKomisariat').innerText = komisariat;
             document.getElementById('statInstruktur').innerText = instruktur;
-
-            // Scorecard Admin
+            
             document.getElementById('adminStatTotal').innerText = total;
             document.getElementById('adminStatAktif').innerText = aktif;
             document.getElementById('adminStatKomisariat').innerText = komisariat;
             document.getElementById('adminStatInstruktur').innerText = instruktur;
 
+            // Render komponen lainnya
+            updateChart();
             renderPublicTables();
             if(isLoggedIn) renderAdminTable();
         }
@@ -577,12 +642,16 @@
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
+        // FUNGSI DOWNLOAD PDF YANG DIPERBAIKI
         function downloadPDF() {
             const element = document.getElementById('printableProfile');
             const btns = document.getElementById('modalActionBtns');
             const namaKader = document.getElementById('detailNama').innerText;
             
+            // Sembunyikan bayangan dan tombol agar rapi di print
             btns.style.display = 'none';
+            element.classList.remove('shadow-2xl');
+            
             const opt = {
                 margin:       0.5,
                 filename:     `Profil_Kader_IMM_${namaKader.replace(/\s+/g, '_')}.pdf`,
@@ -593,14 +662,16 @@
             
             html2pdf().set(opt).from(element).save().then(() => {
                 btns.style.display = 'flex';
+                element.classList.add('shadow-2xl');
                 showToast('PDF berhasil diunduh', 'success');
             }).catch(err => {
                 btns.style.display = 'flex';
+                element.classList.add('shadow-2xl');
                 Swal.fire("Error", "Gagal membuat PDF.", "error");
             });
         }
 
-        // TABEL ADMIN: KADER & INSTRUKTUR
+        // TABEL ADMIN
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
@@ -611,7 +682,6 @@
                 return matchSearch && matchKomisariat;
             });
 
-            // Tabel 1: Kader Admin
             const tbodyKader = document.getElementById('adminTableBody');
             tbodyKader.innerHTML = '';
             filteredKader.forEach(k => {
@@ -629,7 +699,6 @@
             });
             if(filteredKader.length === 0) tbodyKader.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
-            // Tabel 2: Instruktur Admin
             let filteredInstruktur = filteredKader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
             const tbodyInstruktur = document.getElementById('adminInstrukturBody');
             tbodyInstruktur.innerHTML = '';
