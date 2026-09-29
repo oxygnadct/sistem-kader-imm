@@ -8,14 +8,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Library Chart.js & SheetJS (Untuk baca/tulis Excel) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
         .bg-imm-red { background-color: #c92a2a; }
         .text-imm-red { color: #c92a2a; }
         .bg-imm-yellow { background-color: #fcc419; }
         .text-imm-yellow { color: #fcc419; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c92a2a; border-radius: 10px; }
     </style>
@@ -186,13 +189,17 @@
         <!-- DASHBOARD ADMIN -->
         <!-- ======================= -->
         <section id="adminView" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between bg-white p-5 rounded-xl shadow-sm border border-gray-100 items-center">
+            <div class="flex flex-col lg:flex-row justify-between bg-white p-5 rounded-xl shadow-sm border border-gray-100 items-start lg:items-center">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
-                <div class="flex space-x-3 w-full sm:w-auto mt-3 sm:mt-0">
-                    <button onclick="exportToCSV()" class="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center">
-                        <i class="fas fa-file-excel mr-2"></i> Export Data
+                <div class="flex flex-wrap gap-2 w-full lg:w-auto mt-3 lg:mt-0">
+                    <button onclick="exportToCSV()" class="flex-1 lg:flex-none bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center text-sm">
+                        <i class="fas fa-download mr-2"></i> Export Data
                     </button>
-                    <button onclick="openModal('add')" class="flex-1 sm:flex-none bg-imm-red hover:bg-red-800 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center">
+                    <!-- Tombol Upload Excel Baru -->
+                    <button onclick="openExcelModal()" class="flex-1 lg:flex-none bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center text-sm">
+                        <i class="fas fa-file-excel mr-2"></i> Upload Excel
+                    </button>
+                    <button onclick="openModal('add')" class="flex-1 lg:flex-none bg-imm-red hover:bg-red-800 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center justify-center text-sm">
                         <i class="fas fa-plus mr-2"></i> Tambah Kader
                     </button>
                 </div>
@@ -294,7 +301,6 @@
                 <form id="kaderForm" onsubmit="submitForm(event)" class="space-y-6">
                     <input type="hidden" id="formId">
                     
-                    <!-- Info Pribadi & Kampus -->
                     <div class="bg-white p-4 rounded-xl border border-gray-200">
                         <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2"><i class="fas fa-user mr-1"></i> Data Pribadi & Kampus</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -318,7 +324,6 @@
                         </div>
                     </div>
                     
-                    <!-- Info Organisasi -->
                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                         <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2"><i class="fas fa-sitemap mr-1"></i> Data Organisasi</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -348,7 +353,6 @@
                                 </select>
                             </div>
 
-                            <!-- Bidang Form (Hidden by default) -->
                             <div id="bidangField" class="hidden">
                                 <label class="text-sm font-semibold text-imm-red">Bidang Apa *</label>
                                 <input type="text" id="bidang" placeholder="Cth: Bidang Kader" class="w-full px-3 py-2 border border-red-200 rounded">
@@ -382,6 +386,57 @@
             <div class="bg-gray-50 px-6 py-4 border-t flex justify-end space-x-3">
                 <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100 font-medium">Batal</button>
                 <button type="submit" form="kaderForm" id="btnSubmitForm" class="px-4 py-2 bg-imm-red text-white rounded-lg hover:bg-red-800 font-medium">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BARU: Upload Excel Bulk -->
+    <div id="excelModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
+            <div class="bg-blue-50 px-6 py-4 border-b border-blue-200 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-blue-900"><i class="fas fa-file-excel mr-2"></i>Upload Data Massal (Excel)</h3>
+                <button onclick="closeExcelModal()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="p-6 flex flex-col sm:flex-row gap-4 border-b border-gray-100 bg-gray-50 items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">1. Unduh template Excel ini, isi datanya, jangan ubah judul kolomnya.</p>
+                    <button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button>
+                </div>
+                <div class="border-l pl-4 border-gray-300">
+                    <p class="text-sm text-gray-600 mb-2">2. Unggah file Excel yang sudah diisi.</p>
+                    <input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm">
+                </div>
+            </div>
+
+            <!-- Tabel Preview Excel -->
+            <div class="p-4 overflow-y-auto flex-grow custom-scrollbar bg-white">
+                <h4 class="font-bold text-gray-700 mb-2 text-sm">Pratinjau & Verifikasi Data <span class="text-xs font-normal text-red-500 ml-2">(Kotak merah = Wajib diisi/diperbaiki)</span></h4>
+                <div class="overflow-x-auto border rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200 text-xs">
+                        <thead class="bg-gray-800 text-white whitespace-nowrap">
+                            <tr>
+                                <th class="px-3 py-2 text-left">Nama *</th>
+                                <th class="px-3 py-2 text-left">WA *</th>
+                                <th class="px-3 py-2 text-left">Universitas *</th>
+                                <th class="px-3 py-2 text-left">Komisariat *</th>
+                                <th class="px-3 py-2 text-left">Kader Tahun *</th>
+                                <th class="px-3 py-2 text-left">Status</th>
+                                <th class="px-3 py-2 text-left">Fakultas</th>
+                                <th class="px-3 py-2 text-left">Prodi</th>
+                                <th class="px-3 py-2 text-left">NIA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="excelPreviewBody" class="bg-white divide-y divide-gray-200">
+                            <tr><td colspan="9" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 px-6 py-4 border-t flex justify-end space-x-3">
+                <button type="button" onclick="closeExcelModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100 font-medium">Batal</button>
+                <button type="button" id="btnSaveExcel" onclick="saveBulkExcel()" disabled class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-800 font-medium disabled:bg-gray-400 disabled:cursor-not-allowed">Simpan Semua Data</button>
             </div>
         </div>
     </div>
@@ -431,6 +486,7 @@
         let limitKader = 7;
         let limitInstruktur = 7;
         let chartInstance = null;
+        let parsedExcelData = []; // Array penampung data Excel
         
         document.addEventListener("DOMContentLoaded", () => { loadData(); });
 
@@ -637,19 +693,17 @@
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
-        // FUNGSI EXPORT CSV DATA KADER LENGKAP
         function exportToCSV() {
             if(db.kader.length === 0) {
                 showToast('Tidak ada data untuk diexport', 'warning'); return;
             }
-            const headers = ['ID', 'Nama Lengkap', 'NIA', 'Universitas', 'Fakultas', 'Program Studi', 'Kader Tahun', 'Asal Komisariat', 'Status', 'Bidang', 'Jabatan', 'Riwayat Perkaderan Utama', 'Riwayat Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email'];
+            const headers = ['ID', 'Nama Lengkap', 'NIA', 'Universitas', 'Fakultas', 'Program Studi', 'Kader Tahun', 'Asal Komisariat', 'Status Keanggotaan', 'Bidang', 'Jabatan Bidang', 'Riwayat Perkaderan Utama', 'Riwayat Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email', 'Alamat'];
             const rows = db.kader.map(k => [
                 `"${k.ID || ''}"`, `"${k.Nama || ''}"`, `"${k.NIA || ''}"`, `"${k.Universitas || ''}"`, `"${k.Fakultas || ''}"`, `"${k.ProgramStudi || ''}"`, `"${k.KaderTahun || ''}"`, `"${k.Komisariat || ''}"`, 
-                `"${k.Status || ''}"`, `"${k.Bidang || ''}"`, `"${k.JabatanBidang || ''}"`, `"${(k.Pelatihan || '').replace(/\n/g, ' ')}"`, `"${(k.PerkaderanKhusus || '').replace(/\n/g, ' ')}"`, `"${k.StatusInstruktur || ''}"`, `"${k.WA || ''}"`, `"${k.Email || ''}"`
+                `"${k.Status || ''}"`, `"${k.Bidang || ''}"`, `"${k.JabatanBidang || ''}"`, `"${(k.Pelatihan || '').replace(/\n/g, ' ')}"`, `"${(k.PerkaderanKhusus || '').replace(/\n/g, ' ')}"`, `"${k.StatusInstruktur || ''}"`, `"${k.WA || ''}"`, `"${k.Email || ''}"`, `"${k.Alamat || ''}"`
             ]);
             
             let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
-                
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -658,6 +712,137 @@
             showToast('File CSV berhasil diunduh', 'success');
         }
 
+        // ======================================
+        // SISTEM BULK UPLOAD EXCEL (BARU)
+        // ======================================
+        function openExcelModal() {
+            parsedExcelData = [];
+            document.getElementById('excelFileInput').value = '';
+            document.getElementById('excelPreviewBody').innerHTML = `<tr><td colspan="9" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>`;
+            document.getElementById('btnSaveExcel').disabled = true;
+            document.getElementById('excelModal').classList.remove('hidden');
+        }
+        
+        function closeExcelModal() { document.getElementById('excelModal').classList.add('hidden'); }
+
+        function downloadExcelTemplate() {
+            const headers = [
+                "Nama Lengkap", "Nomor WA", "Email", "NIA", "Universitas", "Fakultas", "Program Studi", 
+                "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan Bidang", 
+                "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"
+            ];
+            const ws = XLSX.utils.json_to_sheet([{}], {header: headers});
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Template_Kader");
+            XLSX.writeFile(wb, "Template_Upload_Kader_IMM.xlsx");
+        }
+
+        function handleExcelFile(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = evt.target.result;
+                const workbook = XLSX.read(data, {type: 'binary'});
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, {defval: ""});
+                
+                parsedExcelData = json.map((row, index) => ({
+                    _index: index,
+                    nama: row["Nama Lengkap"] || "",
+                    wa: row["Nomor WA"] || "",
+                    email: row["Email"] || "",
+                    nia: row["NIA"] || "",
+                    universitas: row["Universitas"] || "",
+                    fakultas: row["Fakultas"] || "",
+                    programStudi: row["Program Studi"] || "",
+                    kaderTahun: row["Kader Tahun"] || "",
+                    komisariat: row["Asal Komisariat"] || "",
+                    status: row["Status Keanggotaan"] || "Aktif Komisariat",
+                    bidang: row["Bidang"] || "",
+                    jabatanBidang: row["Jabatan Bidang"] || "",
+                    pelatihan: row["Riwayat Perkaderan Utama"] || "",
+                    perkaderanKhusus: row["Riwayat Perkaderan Khusus"] || "",
+                    statusInstruktur: row["Status Instruktur"] || "",
+                    alamat: row["Alamat Lengkap"] || "",
+                    foto: ""
+                }));
+                renderExcelPreview();
+            };
+            reader.readAsBinaryString(file);
+        }
+
+        function renderExcelPreview() {
+            const tbody = document.getElementById('excelPreviewBody');
+            tbody.innerHTML = '';
+            let hasError = false;
+
+            if(parsedExcelData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-gray-400">Data Excel kosong</td></tr>`;
+                document.getElementById('btnSaveExcel').disabled = true;
+                return;
+            }
+
+            parsedExcelData.forEach((row, i) => {
+                // Validasi data wajib (jika kosong, border merah)
+                const errNama = row.nama === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                const errWa = row.wa === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                const errUniv = row.universitas === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                const errKom = row.komisariat === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                const errTahun = row.kaderTahun === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                
+                if(!row.nama || !row.wa || !row.universitas || !row.komisariat || !row.kaderTahun) hasError = true;
+
+                // Input interaktif agar bisa diperbaiki langsung di layar
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${errNama}"></td>
+                        <td class="p-1"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errWa}"></td>
+                        <td class="p-1"><input type="text" value="${row.universitas}" onchange="updateExcelData(${i}, 'universitas', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errUniv}"></td>
+                        <td class="p-1"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errKom}"></td>
+                        <td class="p-1"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-16 text-xs p-1 border rounded focus:outline-none ${errTahun}"></td>
+                        <td class="p-1"><input type="text" value="${row.status}" onchange="updateExcelData(${i}, 'status', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
+                        <td class="p-1"><input type="text" value="${row.fakultas}" onchange="updateExcelData(${i}, 'fakultas', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
+                        <td class="p-1"><input type="text" value="${row.programStudi}" onchange="updateExcelData(${i}, 'programStudi', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
+                        <td class="p-1"><input type="text" value="${row.nia}" onchange="updateExcelData(${i}, 'nia', this.value)" class="w-20 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
+                    </tr>
+                `;
+            });
+            
+            document.getElementById('btnSaveExcel').disabled = hasError;
+        }
+
+        // Simpan editan langsung di tabel pratinjau
+        function updateExcelData(index, field, value) {
+            parsedExcelData[index][field] = value;
+            renderExcelPreview(); // Re-render untuk hilangkan warna merah jika sudah diisi
+        }
+
+        async function saveBulkExcel() {
+            const btn = document.getElementById('btnSaveExcel');
+            btn.disabled = true; btn.innerHTML = 'Memproses...';
+            
+            try {
+                const response = await fetch('/api/kader', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(parsedExcelData)
+                });
+                const res = await response.json();
+                if(res.success) { 
+                    closeExcelModal(); 
+                    Swal.fire("Berhasil", res.message, "success");
+                    loadData(); 
+                } else {
+                    Swal.fire("Gagal", res.message, "error");
+                }
+            } catch (err) { Swal.fire("Error Server", err.message, "error"); }
+            finally { btn.disabled = false; btn.innerHTML = 'Simpan Semua Data'; }
+        }
+
+        // TABEL ADMIN NORMAL
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
@@ -714,7 +899,6 @@
             }
         }
 
-        // Tampilkan Bidang dan Jabatan jika Aktif
         function toggleBidang(val) {
             const bidangField = document.getElementById('bidangField');
             const jabatanField = document.getElementById('jabatanBidangField');
