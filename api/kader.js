@@ -21,26 +21,13 @@ export default async function handler(req, res) {
       const id = "KDR-" + new Date().toISOString().replace(/\D/g,'').slice(0,14) + "-" + Math.floor(Math.random() * 1000);
       const timestamp = new Date().toISOString();
 
-      // Menambahkan fallback (|| '') agar jika datanya undefined, akan diubah menjadi teks kosong yang aman untuk Turso
       await client.execute({
-        sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur, KaderTahun) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         args: [
-          id, 
-          timestamp, 
-          body.nama || '', 
-          body.wa || '', 
-          body.email || '', 
-          body.alamat || '', 
-          body.komisariat || '', 
-          body.status || '', 
-          body.nia || '', 
-          body.pelatihan || '', 
-          body.penugasan || '', 
-          body.pekerjaan || '', 
-          body.jabatan || '', 
-          body.foto || '', 
-          body.perkaderanKhusus || '', 
-          body.statusInstruktur || ''
+          id, timestamp, body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
+          body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
+          body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
+          body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || ''
         ]
       });
       res.status(200).json({ success: true, message: "Data kader berhasil ditambahkan!" });
@@ -48,22 +35,12 @@ export default async function handler(req, res) {
     else if (req.method === 'PUT') {
       const body = req.body;
       await client.execute({
-        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=? WHERE ID=?",
+        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=?, KaderTahun=? WHERE ID=?",
         args: [
-          body.nama || '', 
-          body.wa || '', 
-          body.email || '', 
-          body.alamat || '', 
-          body.komisariat || '', 
-          body.status || '', 
-          body.nia || '', 
-          body.pelatihan || '', 
-          body.penugasan || '', 
-          body.pekerjaan || '', 
-          body.jabatan || '', 
-          body.foto || '', 
-          body.perkaderanKhusus || '', 
-          body.statusInstruktur || '', 
+          body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
+          body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
+          body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
+          body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '', 
           body.id
         ]
       });
