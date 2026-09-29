@@ -17,40 +17,36 @@ export default async function handler(req, res) {
       });
     } 
     else if (req.method === 'POST') {
-      // Cek apakah data yang dikirim berupa array (bulk) atau objek tunggal
       const dataArray = Array.isArray(req.body) ? req.body : [req.body];
       const timestamp = new Date().toISOString();
 
-      // Buat tumpukan query untuk batch insert
       const queries = dataArray.map((body, index) => {
-        // ID digenerate unik menggunakan index loop agar tidak bentrok
         const id = "KDR-" + Date.now() + "-" + Math.floor(Math.random() * 1000) + "-" + index;
         return {
-          sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur, KaderTahun, Bidang, JabatanBidang, Fakultas, ProgramStudi, Universitas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur, KaderTahun, Bidang, JabatanBidang, Fakultas, ProgramStudi, Universitas, RiwayatPendidikan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           args: [
             id, timestamp, body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
             body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
             body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
             body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '',
-            body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || ''
+            body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || '', body.riwayatPendidikan || ''
           ]
         };
       });
 
-      // Eksekusi semua query sekaligus
       await client.batch(queries, "write");
       res.status(200).json({ success: true, message: `${dataArray.length} data kader berhasil ditambahkan!` });
     } 
     else if (req.method === 'PUT') {
       const body = req.body;
       await client.execute({
-        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=?, KaderTahun=?, Bidang=?, JabatanBidang=?, Fakultas=?, ProgramStudi=?, Universitas=? WHERE ID=?",
+        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=?, KaderTahun=?, Bidang=?, JabatanBidang=?, Fakultas=?, ProgramStudi=?, Universitas=?, RiwayatPendidikan=? WHERE ID=?",
         args: [
           body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
           body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
           body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
           body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '', 
-          body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || '',
+          body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || '', body.riwayatPendidikan || '',
           body.id
         ]
       });
