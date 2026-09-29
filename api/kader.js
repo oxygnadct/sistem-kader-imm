@@ -17,21 +17,55 @@ export default async function handler(req, res) {
       });
     } 
     else if (req.method === 'POST') {
-      const { nama, wa, email, alamat, komisariat, status, nia, pelatihan, penugasan, pekerjaan, jabatan, foto, perkaderanKhusus, statusInstruktur } = req.body;
+      const body = req.body;
       const id = "KDR-" + new Date().toISOString().replace(/\D/g,'').slice(0,14) + "-" + Math.floor(Math.random() * 1000);
       const timestamp = new Date().toISOString();
 
+      // Menambahkan fallback (|| '') agar jika datanya undefined, akan diubah menjadi teks kosong yang aman untuk Turso
       await client.execute({
         sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        args: [id, timestamp, nama, wa, email, alamat, komisariat, status, nia, pelatihan, penugasan, pekerjaan, jabatan, foto || '', perkaderanKhusus || '', statusInstruktur || '']
+        args: [
+          id, 
+          timestamp, 
+          body.nama || '', 
+          body.wa || '', 
+          body.email || '', 
+          body.alamat || '', 
+          body.komisariat || '', 
+          body.status || '', 
+          body.nia || '', 
+          body.pelatihan || '', 
+          body.penugasan || '', 
+          body.pekerjaan || '', 
+          body.jabatan || '', 
+          body.foto || '', 
+          body.perkaderanKhusus || '', 
+          body.statusInstruktur || ''
+        ]
       });
       res.status(200).json({ success: true, message: "Data kader berhasil ditambahkan!" });
     } 
     else if (req.method === 'PUT') {
-      const { id, nama, wa, email, alamat, komisariat, status, nia, pelatihan, penugasan, pekerjaan, jabatan, foto, perkaderanKhusus, statusInstruktur } = req.body;
+      const body = req.body;
       await client.execute({
         sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=? WHERE ID=?",
-        args: [nama, wa, email, alamat, komisariat, status, nia, pelatihan, penugasan, pekerjaan, jabatan, foto || '', perkaderanKhusus || '', statusInstruktur || '', id]
+        args: [
+          body.nama || '', 
+          body.wa || '', 
+          body.email || '', 
+          body.alamat || '', 
+          body.komisariat || '', 
+          body.status || '', 
+          body.nia || '', 
+          body.pelatihan || '', 
+          body.penugasan || '', 
+          body.pekerjaan || '', 
+          body.jabatan || '', 
+          body.foto || '', 
+          body.perkaderanKhusus || '', 
+          body.statusInstruktur || '', 
+          body.id
+        ]
       });
       res.status(200).json({ success: true, message: "Data berhasil diupdate!" });
     } 
