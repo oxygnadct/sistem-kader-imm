@@ -1,0 +1,11 @@
+{
+  "name": "sistem-kader-imm",
+  "version": "1.0.0",
+  "description": "Sistem Informasi Kader PC IMM Jaksel",
+  "scripts": {
+    "start": "node api/kader.js"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0"
+  }
+}
