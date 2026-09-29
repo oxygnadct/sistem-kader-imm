@@ -22,12 +22,13 @@ export default async function handler(req, res) {
       const timestamp = new Date().toISOString();
 
       await client.execute({
-        sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur, KaderTahun) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        sql: "INSERT INTO kader (ID, Timestamp, Nama, WA, Email, Alamat, Komisariat, Status, NIA, Pelatihan, Penugasan, Pekerjaan, Jabatan, Foto, PerkaderanKhusus, StatusInstruktur, KaderTahun, Bidang, JabatanBidang, Fakultas, ProgramStudi, Universitas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         args: [
           id, timestamp, body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
           body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
           body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
-          body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || ''
+          body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '',
+          body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || ''
         ]
       });
       res.status(200).json({ success: true, message: "Data kader berhasil ditambahkan!" });
@@ -35,12 +36,13 @@ export default async function handler(req, res) {
     else if (req.method === 'PUT') {
       const body = req.body;
       await client.execute({
-        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=?, KaderTahun=? WHERE ID=?",
+        sql: "UPDATE kader SET Nama=?, WA=?, Email=?, Alamat=?, Komisariat=?, Status=?, NIA=?, Pelatihan=?, Penugasan=?, Pekerjaan=?, Jabatan=?, Foto=?, PerkaderanKhusus=?, StatusInstruktur=?, KaderTahun=?, Bidang=?, JabatanBidang=?, Fakultas=?, ProgramStudi=?, Universitas=? WHERE ID=?",
         args: [
           body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
           body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
           body.penugasan || '', body.pekerjaan || '', body.jabatan || '', body.foto || '', 
           body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '', 
+          body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || '',
           body.id
         ]
       });
