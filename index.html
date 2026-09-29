@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Library Chart.js & SheetJS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
@@ -67,7 +66,6 @@
                 <h1 class="text-3xl font-extrabold text-gray-900">Portal Statistik Kader</h1>
             </div>
 
-            <!-- Chart Persebaran Komisariat -->
             <div class="max-w-md mx-auto bg-white p-5 rounded-xl shadow-md border border-gray-100">
                 <h3 class="text-center text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Sebaran Kader per Komisariat</h3>
                 <div class="relative h-48 w-full flex justify-center">
@@ -123,7 +121,7 @@
                 </select>
             </div>
 
-            <!-- Tabel Kader Publik -->
+            <!-- Tabel Kader Publik (Dengan NIA) -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-users mr-2 text-imm-red"></i>Data Kader (Klik untuk Detail)</h2></div>
                 <div class="overflow-x-auto">
@@ -131,6 +129,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Lengkap</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIA</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
@@ -144,7 +143,7 @@
                 </div>
             </div>
 
-            <!-- Tabel Instruktur Publik -->
+            <!-- Tabel Instruktur Publik (Dengan NIA) -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mt-6">
                 <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-chalkboard-teacher mr-2 text-green-600"></i>Data Instruktur</h2></div>
                 <div class="overflow-x-auto">
@@ -152,6 +151,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Instruktur</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIA</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kesiapan Bertugas</th>
@@ -249,7 +249,7 @@
                 </select>
             </div>
 
-            <!-- Tabel Kader Admin -->
+            <!-- Tabel Kader Admin (WA & Email ditampilkan, NIA disembunyikan) -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
                 <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-users mr-2 text-imm-red"></i>Master Data Kader</h2></div>
                 <div class="overflow-x-auto">
@@ -258,7 +258,7 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Lengkap</th>
-                                <th class="px-4 py-3 text-left">NIA</th>
+                                <th class="px-4 py-3 text-left">No WA</th>
                                 <th class="px-4 py-3 text-left">Email</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
                                 <th class="px-4 py-3 text-left">Kader Tahun</th>
@@ -279,7 +279,7 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">Aksi</th>
                                 <th class="px-4 py-3 text-left">Nama Instruktur</th>
-                                <th class="px-4 py-3 text-left">NIA</th>
+                                <th class="px-4 py-3 text-left">No WA</th>
                                 <th class="px-4 py-3 text-left">Email</th>
                                 <th class="px-4 py-3 text-left">Komisariat</th>
                                 <th class="px-4 py-3 text-left">Kader Tahun</th>
@@ -311,13 +311,22 @@
                             <div><label class="text-sm font-semibold">No WA *</label><input type="number" id="wa" required class="w-full px-3 py-2 border rounded"></div>
                             <div><label class="text-sm font-semibold">Email</label><input type="email" id="email" class="w-full px-3 py-2 border rounded"></div>
                             <div><label class="text-sm font-semibold">NIA</label><input type="text" id="nia" class="w-full px-3 py-2 border rounded"></div>
-                            
-                            <div><label class="text-sm font-semibold">Universitas *</label><input type="text" id="universitas" placeholder="Cth: UHAMKA" required class="w-full px-3 py-2 border rounded"></div>
-                            <div><label class="text-sm font-semibold">Fakultas *</label><input type="text" id="fakultas" placeholder="Cth: FISIP" required class="w-full px-3 py-2 border rounded"></div>
-                            <div><label class="text-sm font-semibold">Program Studi *</label><input type="text" id="programStudi" placeholder="Cth: Ilmu Komunikasi" required class="w-full px-3 py-2 border rounded"></div>
                             <div><label class="text-sm font-semibold">Kader Tahun *</label><input type="number" id="kaderTahun" placeholder="Cth: 2023" required class="w-full px-3 py-2 border rounded"></div>
                             
-                            <div class="md:col-span-2">
+                            <!-- Input Interaktif Riwayat Pendidikan Baru -->
+                            <div class="md:col-span-2 bg-blue-50 p-4 rounded-lg border border-blue-100 mt-2">
+                                <label class="text-sm font-semibold text-blue-900 mb-2 block">Riwayat Pendidikan *</label>
+                                <div class="flex flex-col md:flex-row gap-2 mb-3">
+                                    <select id="jenjangTemp" class="p-2 border rounded text-sm bg-white"><option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option><option value="D3">D3</option></select>
+                                    <input type="text" id="univTemp" placeholder="Universitas" class="p-2 border rounded text-sm w-full">
+                                    <input type="text" id="fakTemp" placeholder="Fakultas" class="p-2 border rounded text-sm w-full">
+                                    <input type="text" id="prodiTemp" placeholder="Prodi" class="p-2 border rounded text-sm w-full">
+                                    <button type="button" onclick="tambahPendidikan()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold whitespace-nowrap"><i class="fas fa-plus mr-1"></i> Tambah</button>
+                                </div>
+                                <textarea id="riwayatPendidikan" rows="3" required class="w-full px-3 py-2 border rounded bg-white whitespace-pre-wrap text-sm" placeholder="Data pendidikan akan muncul di sini... (Bisa diketik manual juga)"></textarea>
+                            </div>
+                            
+                            <div class="md:col-span-2 mt-2">
                                 <label class="text-sm font-semibold">Unggah Foto (Opsional)</label>
                                 <input type="file" id="fotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event)">
                                 <input type="hidden" id="fotoBase64">
@@ -423,17 +432,15 @@
                             <tr>
                                 <th class="px-3 py-2 text-left">Nama *</th>
                                 <th class="px-3 py-2 text-left">WA *</th>
-                                <th class="px-3 py-2 text-left">Universitas *</th>
+                                <th class="px-3 py-2 text-left">Riwayat Pendidikan *</th>
                                 <th class="px-3 py-2 text-left">Komisariat *</th>
                                 <th class="px-3 py-2 text-left">Kader Tahun *</th>
                                 <th class="px-3 py-2 text-left">Status</th>
-                                <th class="px-3 py-2 text-left">Fakultas</th>
-                                <th class="px-3 py-2 text-left">Prodi</th>
                                 <th class="px-3 py-2 text-left">NIA</th>
                             </tr>
                         </thead>
                         <tbody id="excelPreviewBody" class="bg-white divide-y divide-gray-200">
-                            <tr><td colspan="9" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>
+                            <tr><td colspan="7" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -459,12 +466,17 @@
                 
                 <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
                 <p class="text-sm font-bold text-imm-red text-center mt-1"><span id="detailKomisariat">Komisariat</span> (<span id="detailKaderTahun">-</span>)</p>
-                <p class="text-xs font-semibold text-gray-500 text-center mt-1"><span id="detailUniversitas">-</span> | <span id="detailProgramStudi">-</span></p>
+                <p class="text-xs text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
                 
                 <div class="w-full mt-6 space-y-3 text-sm border-t border-gray-200 pt-4">
                     <div class="flex flex-col border-b border-gray-100 pb-2">
                         <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span>
                         <span class="font-semibold text-gray-800" id="detailStatus">-</span>
+                    </div>
+                    <!-- Tampilan Pendidikan Diubah untuk Multi-Jenjang -->
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span>
                     </div>
                     <div class="flex flex-col border-b border-gray-100 pb-2">
                         <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span>
@@ -642,13 +654,14 @@
                 tKader.innerHTML += `
                     <tr class="hover:bg-gray-100 transition cursor-pointer" onclick="showDetail('${k.ID}')">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${k.Nama}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">${k.NIA || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.Komisariat}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.KaderTahun || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ${badge}">${k.Status}</span></td>
                     </tr>`;
             });
             document.getElementById('kaderShowMoreBtn').style.display = filteredKader.length > limitKader ? 'block' : 'none';
-            if(slicedKader.length === 0) tKader.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
+            if(slicedKader.length === 0) tKader.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
             const tInstruktur = document.getElementById('publicInstrukturBody');
             tInstruktur.innerHTML = '';
@@ -658,13 +671,14 @@
                 tInstruktur.innerHTML += `
                     <tr class="hover:bg-gray-100 transition cursor-pointer" onclick="showDetail('${k.ID}')">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${k.Nama}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">${k.NIA || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.Komisariat}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${k.KaderTahun || '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
             document.getElementById('instrukturShowMoreBtn').style.display = filteredInstruktur.length > limitInstruktur ? 'block' : 'none';
-            if(slicedInstruktur.length === 0) tInstruktur.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(slicedInstruktur.length === 0) tInstruktur.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function loadMore(type) {
@@ -681,9 +695,14 @@
             document.getElementById('detailNama').innerText = data.Nama;
             document.getElementById('detailKomisariat').innerText = data.Komisariat;
             document.getElementById('detailKaderTahun').innerText = data.KaderTahun || '-';
+            document.getElementById('detailNIA').innerText = data.NIA || '-';
             
-            document.getElementById('detailUniversitas').innerText = data.Universitas || '-';
-            document.getElementById('detailProgramStudi').innerText = data.ProgramStudi || '-';
+            // Format fallback jika data lama (Universitas/ProgramStudi tunggal) masih ada, gabungkan saja dengan RiwayatPendidikan
+            let pendText = data.RiwayatPendidikan || '';
+            if (!pendText && data.Universitas) {
+                pendText = `${data.Universitas} - ${data.Fakultas || ''} - ${data.ProgramStudi || ''}`;
+            }
+            document.getElementById('detailPendidikan').innerText = pendText || 'Belum Ada';
             
             let displayStatus = data.Status;
             if(data.Status && data.Status.includes('Aktif') && data.Bidang) {
@@ -702,10 +721,10 @@
             if(db.kader.length === 0) {
                 showToast('Tidak ada data untuk diexport', 'warning'); return;
             }
-            const headers = ['ID', 'Nama Lengkap', 'NIA', 'Universitas', 'Fakultas', 'Program Studi', 'Kader Tahun', 'Asal Komisariat', 'Status Keanggotaan', 'Bidang', 'Jabatan Bidang', 'Riwayat Perkaderan Utama', 'Riwayat Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email', 'Alamat'];
+            const headers = ['ID', 'Nama Lengkap', 'NIA', 'Riwayat Pendidikan', 'Kader Tahun', 'Asal Komisariat', 'Status Keanggotaan', 'Bidang', 'Jabatan Bidang', 'Riwayat Perkaderan Utama', 'Riwayat Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email', 'Alamat'];
             const rows = db.kader.map(k => [
-                `"${k.ID || ''}"`, `"${k.Nama || ''}"`, `"${k.NIA || ''}"`, `"${k.Universitas || ''}"`, `"${k.Fakultas || ''}"`, `"${k.ProgramStudi || ''}"`, `"${k.KaderTahun || ''}"`, `"${k.Komisariat || ''}"`, 
-                `"${k.Status || ''}"`, `"${k.Bidang || ''}"`, `"${k.JabatanBidang || ''}"`, `"${(k.Pelatihan || '').replace(/\n/g, ' ')}"`, `"${(k.PerkaderanKhusus || '').replace(/\n/g, ' ')}"`, `"${k.StatusInstruktur || ''}"`, `"${k.WA || ''}"`, `"${k.Email || ''}"`, `"${k.Alamat || ''}"`
+                `"${k.ID || ''}"`, `"${k.Nama || ''}"`, `"${k.NIA || ''}"`, `"${(k.RiwayatPendidikan || '').replace(/\n/g, ' | ')}"`, `"${k.KaderTahun || ''}"`, `"${k.Komisariat || ''}"`, 
+                `"${k.Status || ''}"`, `"${k.Bidang || ''}"`, `"${k.JabatanBidang || ''}"`, `"${(k.Pelatihan || '').replace(/\n/g, ' | ')}"`, `"${(k.PerkaderanKhusus || '').replace(/\n/g, ' | ')}"`, `"${k.StatusInstruktur || ''}"`, `"${k.WA || ''}"`, `"${k.Email || ''}"`, `"${k.Alamat || ''}"`
             ]);
             
             let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
@@ -723,7 +742,7 @@
         function openExcelModal() {
             parsedExcelData = [];
             document.getElementById('excelFileInput').value = '';
-            document.getElementById('excelPreviewBody').innerHTML = `<tr><td colspan="9" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>`;
+            document.getElementById('excelPreviewBody').innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400">Belum ada file yang diunggah</td></tr>`;
             document.getElementById('btnSaveExcel').disabled = true;
             document.getElementById('excelModal').classList.remove('hidden');
         }
@@ -732,7 +751,7 @@
 
         function downloadExcelTemplate() {
             const headers = [
-                "Nama Lengkap", "Nomor WA", "Email", "NIA", "Universitas", "Fakultas", "Program Studi", 
+                "Nama Lengkap", "Nomor WA", "Email", "NIA", "Riwayat Pendidikan (S1/S2 - Univ - Prodi)", 
                 "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan Bidang", 
                 "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"
             ];
@@ -760,9 +779,7 @@
                     wa: row["Nomor WA"] || "",
                     email: row["Email"] || "",
                     nia: row["NIA"] || "",
-                    universitas: row["Universitas"] || "",
-                    fakultas: row["Fakultas"] || "",
-                    programStudi: row["Program Studi"] || "",
+                    riwayatPendidikan: row["Riwayat Pendidikan (S1/S2 - Univ - Prodi)"] || "",
                     kaderTahun: row["Kader Tahun"] || "",
                     komisariat: row["Asal Komisariat"] || "",
                     status: row["Status Keanggotaan"] || "Aktif Komisariat",
@@ -772,7 +789,7 @@
                     perkaderanKhusus: row["Riwayat Perkaderan Khusus"] || "",
                     statusInstruktur: row["Status Instruktur"] || "",
                     alamat: row["Alamat Lengkap"] || "",
-                    foto: ""
+                    foto: "", universitas: "", fakultas: "", programStudi: ""
                 }));
                 renderExcelPreview();
             };
@@ -785,7 +802,7 @@
             let hasError = false;
 
             if(parsedExcelData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-gray-400">Data Excel kosong</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400">Data Excel kosong</td></tr>`;
                 document.getElementById('btnSaveExcel').disabled = true;
                 return;
             }
@@ -793,22 +810,20 @@
             parsedExcelData.forEach((row, i) => {
                 const errNama = row.nama === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 const errWa = row.wa === "" ? "border-red-500 bg-red-50" : "border-gray-200";
-                const errUniv = row.universitas === "" ? "border-red-500 bg-red-50" : "border-gray-200";
+                const errPend = row.riwayatPendidikan === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 const errKom = row.komisariat === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 const errTahun = row.kaderTahun === "" ? "border-red-500 bg-red-50" : "border-gray-200";
                 
-                if(!row.nama || !row.wa || !row.universitas || !row.komisariat || !row.kaderTahun) hasError = true;
+                if(!row.nama || !row.wa || !row.riwayatPendidikan || !row.komisariat || !row.kaderTahun) hasError = true;
 
                 tbody.innerHTML += `
                     <tr>
                         <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${errNama}"></td>
                         <td class="p-1"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errWa}"></td>
-                        <td class="p-1"><input type="text" value="${row.universitas}" onchange="updateExcelData(${i}, 'universitas', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errUniv}"></td>
+                        <td class="p-1"><input type="text" value="${row.riwayatPendidikan}" onchange="updateExcelData(${i}, 'riwayatPendidikan', this.value)" class="w-32 text-xs p-1 border rounded focus:outline-none ${errPend}"></td>
                         <td class="p-1"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${errKom}"></td>
                         <td class="p-1"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-16 text-xs p-1 border rounded focus:outline-none ${errTahun}"></td>
                         <td class="p-1"><input type="text" value="${row.status}" onchange="updateExcelData(${i}, 'status', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
-                        <td class="p-1"><input type="text" value="${row.fakultas}" onchange="updateExcelData(${i}, 'fakultas', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
-                        <td class="p-1"><input type="text" value="${row.programStudi}" onchange="updateExcelData(${i}, 'programStudi', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
                         <td class="p-1"><input type="text" value="${row.nia}" onchange="updateExcelData(${i}, 'nia', this.value)" class="w-20 text-xs p-1 border-gray-200 rounded focus:outline-none"></td>
                     </tr>
                 `;
@@ -844,7 +859,7 @@
             finally { btn.disabled = false; btn.innerHTML = 'Simpan Semua Data'; }
         }
 
-        // TABEL ADMIN NORMAL (Diperbarui dengan NIA & Email)
+        // TABEL ADMIN NORMAL
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
@@ -865,7 +880,7 @@
                             <button onclick="deleteKader('${k.ID}')" class="text-red-600 bg-red-50 p-1.5 rounded"><i class="fas fa-trash"></i></button>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.NIA || '-'}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.WA || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
@@ -886,7 +901,7 @@
                             <button onclick="deleteKader('${k.ID}')" class="text-red-600 bg-red-50 p-1.5 rounded"><i class="fas fa-trash"></i></button>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${k.Nama}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.NIA || '-'}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.WA || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
@@ -921,6 +936,25 @@
             }
         }
 
+        function tambahPendidikan() {
+            const jenjang = document.getElementById('jenjangTemp').value;
+            const univ = document.getElementById('univTemp').value;
+            const fak = document.getElementById('fakTemp').value;
+            const prodi = document.getElementById('prodiTemp').value;
+            
+            if(!univ || !prodi) {
+                Swal.fire("Peringatan", "Universitas dan Prodi wajib diisi!", "warning"); return;
+            }
+            
+            const txt = document.getElementById('riwayatPendidikan');
+            const newLine = `${jenjang} - ${univ} - ${fak ? fak + ' - ' : ''}${prodi}`;
+            txt.value = txt.value ? txt.value + '\n' + newLine : newLine;
+            
+            document.getElementById('univTemp').value = '';
+            document.getElementById('fakTemp').value = '';
+            document.getElementById('prodiTemp').value = '';
+        }
+
         const predefinedKomisariat = ["PK IMM FISIP", "PK IMM FAI", "PK IMM Psikologi", "PK IMM FIKes", "PK IMM Buya Hamka"];
 
         function openModal(mode, data = null) {
@@ -944,10 +978,7 @@
                 document.getElementById('nia').value = data.NIA || '';
                 document.getElementById('kaderTahun').value = data.KaderTahun || '';
                 
-                document.getElementById('universitas').value = data.Universitas || '';
-                document.getElementById('fakultas').value = data.Fakultas || '';
-                document.getElementById('programStudi').value = data.ProgramStudi || '';
-                
+                document.getElementById('riwayatPendidikan').value = data.RiwayatPendidikan || '';
                 document.getElementById('pelatihan').value = data.Pelatihan || '';
                 document.getElementById('perkaderanKhusus').value = data.PerkaderanKhusus || '';
                 document.getElementById('statusInstruktur').value = data.StatusInstruktur || '';
@@ -997,9 +1028,8 @@
                 status: document.getElementById('status').value,
                 nia: document.getElementById('nia').value,
                 kaderTahun: document.getElementById('kaderTahun').value,
-                universitas: document.getElementById('universitas').value,
-                fakultas: document.getElementById('fakultas').value,
-                programStudi: document.getElementById('programStudi').value,
+                riwayatPendidikan: document.getElementById('riwayatPendidikan').value,
+                universitas: "", fakultas: "", programStudi: "", // dikosongkan agar legacy API tidak error
                 bidang: document.getElementById('bidang').value,
                 jabatanBidang: document.getElementById('jabatanBidang').value,
                 pelatihan: document.getElementById('pelatihan').value,
