@@ -2,6 +2,7 @@
   "name": "sistem-kader-imm",
   "version": "1.0.0",
   "description": "Sistem Informasi Kader PC IMM Jaksel",
+  "type": "module",
   "scripts": {
     "start": "node api/kader.js"
   },
