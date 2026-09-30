@@ -114,7 +114,7 @@
                         <button onclick="loadMoreBerita()" class="text-imm-red font-bold hover:underline text-sm border-2 border-imm-red px-6 py-2.5 rounded-full hover:bg-red-50 transition">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
                     </div>
                     <div id="beritaEmpty" class="hidden text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i><p class="text-gray-500">Belum ada publikasi saat ini.</p>
+                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i><p class="text-gray-500">Belum ada publikasi atau pencarian tidak ditemukan.</p>
                     </div>
                 </div>
 
@@ -479,7 +479,13 @@
                 <div class="overflow-x-auto border rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200 text-xs">
                         <thead class="bg-gray-800 text-white whitespace-nowrap">
-                            <tr><th class="px-3 py-2">Nama *</th><th class="px-3 py-2">WA *</th><th class="px-3 py-2">Riwayat Pendidikan *</th><th class="px-3 py-2">Komisariat *</th><th class="px-3 py-2">Tahun *</th></tr>
+                            <tr>
+                                <th class="px-3 py-2">Nama *</th>
+                                <th class="px-3 py-2">WA *</th>
+                                <th class="px-3 py-2">Riwayat Pendidikan *</th>
+                                <th class="px-3 py-2">Komisariat *</th>
+                                <th class="px-3 py-2">Tahun *</th>
+                            </tr>
                         </thead>
                         <tbody id="excelPreviewBody"><tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr></tbody>
                     </table>
@@ -495,7 +501,9 @@
     <!-- Modal Profil Kader Publik -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
         <div class="bg-white rounded-xl w-full max-w-md mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-            <div class="bg-imm-red p-4 text-center"><h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2></div>
+            <div class="bg-imm-red p-4 text-center">
+                <h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2>
+            </div>
             <div class="p-6 flex flex-col items-center">
                 <img id="detailFoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover border-4 border-gray-100 shadow-sm mb-4">
                 <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
@@ -503,13 +511,27 @@
                 <p class="text-xs font-semibold text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
                 
                 <div class="w-full mt-6 space-y-3 text-sm border-t border-gray-200 pt-4">
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span><span class="font-semibold text-gray-800" id="detailStatus">-</span></div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span></div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span></div>
-                    <div class="flex flex-col"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span></div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span>
+                        <span class="font-semibold text-gray-800" id="detailStatus">-</span>
+                    </div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span>
+                    </div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span>
+                    </div>
                 </div>
             </div>
-            <div class="p-4 bg-gray-50 border-t border-gray-200"><button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button></div>
+            <div class="p-4 bg-gray-50 border-t border-gray-200">
+                <button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button>
+            </div>
         </div>
     </div>
 
@@ -524,14 +546,22 @@
                 <form id="beritaForm" onsubmit="submitBerita(event)" class="space-y-4">
                     <input type="hidden" id="beritaId">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2"><label class="text-sm font-semibold">Judul Tulisan *</label><input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm font-semibold">Judul Tulisan *</label>
+                            <input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-imm-red focus:outline-none">
+                        </div>
                         <div>
                             <label class="text-sm font-semibold">Kategori *</label>
                             <select id="bKategori" required class="w-full px-3 py-2 border rounded bg-white focus:outline-none">
-                                <option value="Berita">Berita / Kabar</option><option value="Kegiatan">Informasi Kegiatan</option><option value="Opini">Opini / Artikel</option>
+                                <option value="Berita">Berita / Kabar</option>
+                                <option value="Kegiatan">Informasi Kegiatan</option>
+                                <option value="Opini">Opini / Artikel</option>
                             </select>
                         </div>
-                        <div><label class="text-sm font-semibold">Penulis *</label><input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
+                        <div>
+                            <label class="text-sm font-semibold">Penulis *</label>
+                            <input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none">
+                        </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Foto Cover (Opsional)</label>
                             <input type="file" id="bFotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'bFotoBase64', 'bFotoPreview', 800)">
@@ -540,7 +570,9 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Isi Konten *</label>
-                            <div class="bg-white"><div id="bKontenEditor"></div></div>
+                            <div class="bg-white">
+                                <div id="bKontenEditor"></div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -591,7 +623,6 @@
         let currentBeritaTitle = ""; 
         
         document.addEventListener("DOMContentLoaded", () => { 
-            // Inisialisasi dibungkus try-catch agar aman jika internet lambat
             try {
                 if(document.getElementById('bKontenEditor')) {
                     quill = new Quill('#bKontenEditor', {
@@ -617,14 +648,12 @@
         async function loadData() {
             showLoading(true);
             
-            // Timeout keamanan 6 detik agar web tidak stuck
             fetchTimeout = setTimeout(() => {
                 showLoading(false); 
                 renderUI();
             }, 6000);
 
             try {
-                // Gunakan getTime() untuk membobol cache browser (selalu ambil data paling baru)
                 const ts = new Date().getTime();
                 let resKader = await fetch('/api/kader?t=' + ts).catch(() => null);
                 let resBerita = await fetch('/api/berita?t=' + ts).catch(() => null);
@@ -654,24 +683,37 @@
         function scrollToSection(id) {
             if (currentView !== 'public') switchView('public');
             const element = document.getElementById(id);
-            if (element) { setTimeout(() => { element.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 10); }
+            if (element) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 10);
+            }
         }
 
         function handleFotoUpload(event, base64Id = 'fotoBase64', previewId = 'fotoPreview', setMaxWidth = 400) {
-            const file = event.target.files[0]; if (!file) return;
+            const file = event.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     let width = img.width; let height = img.height;
-                    if (width > height) { if (width > setMaxWidth) { height *= setMaxWidth / width; width = setMaxWidth; } } 
-                    else { if (height > setMaxWidth) { width *= setMaxWidth / height; height = setMaxWidth; } }
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
                     canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.8); 
                     document.getElementById(base64Id).value = dataUrl;
-                    const preview = document.getElementById(previewId); preview.src = dataUrl; preview.classList.remove('hidden');
+                    const preview = document.getElementById(previewId);
+                    preview.src = dataUrl;
+                    preview.classList.remove('hidden');
                 }
                 img.src = e.target.result;
             }
@@ -681,20 +723,28 @@
         function updateChart() {
             if(!db.kader) return;
             const ctx = document.getElementById('komisariatChart').getContext('2d');
-            const counts = {}; db.kader.forEach(k => { counts[k.Komisariat || 'Lainnya'] = (counts[k.Komisariat || 'Lainnya'] || 0) + 1; });
-            const labels = Object.keys(counts); const data = Object.values(counts);
+            const counts = {};
+            db.kader.forEach(k => {
+                const kom = k.Komisariat || 'Lainnya';
+                counts[kom] = (counts[kom] || 0) + 1;
+            });
+            const labels = Object.keys(counts);
+            const data = Object.values(counts);
+            
             if (chartInstance) {
-                chartInstance.data.labels = labels; chartInstance.data.datasets[0].data = data; chartInstance.update();
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.update();
             } else {
                 chartInstance = new Chart(ctx, {
-                    type: 'pie', data: { labels: labels, datasets: [{ data: data, backgroundColor: ['#c92a2a', '#fcc419', '#3b82f6', '#10b981', '#8b5cf6', '#f97316', '#64748b'], borderWidth: 1 }] },
+                    type: 'pie',
+                    data: { labels: labels, datasets: [{ data: data, backgroundColor: ['#c92a2a', '#fcc419', '#3b82f6', '#10b981', '#8b5cf6', '#f97316', '#64748b'], borderWidth: 1 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 } } } } }
                 });
             }
         }
 
         function renderUI() {
-            // Isolasi setiap bagian UI agar tidak saling membatalkan jika terjadi error
             try {
                 const total = db.kader ? db.kader.length : 0;
                 const aktif = db.kader ? db.kader.filter(k => k.Status && k.Status.includes('Aktif')).length : 0;
@@ -705,7 +755,7 @@
                 document.querySelectorAll('#statAktif, #adminStatAktif').forEach(el => el.innerText = aktif);
                 document.querySelectorAll('#statKomisariat, #adminStatKomisariat').forEach(el => el.innerText = komisariat);
                 document.querySelectorAll('#statInstruktur, #adminStatInstruktur').forEach(el => el.innerText = instruktur);
-            } catch(e) { console.warn("Scorecard error", e); }
+            } catch(e) {}
             
             try {
                 if (db.config) {
@@ -719,11 +769,11 @@
                     if(inputWA) inputWA.value = db.config.ContactWA || ''; 
                     if(inputIG) inputIG.value = db.config.ContactIG || '';
                 }
-            } catch(e) { console.warn("Footer config error", e); }
+            } catch(e) {}
 
-            try { updateChart(); } catch(e) { console.warn("Chart error", e); }
-            try { renderPublicTables(); } catch(e) { console.warn("Table error", e); }
-            try { renderBeritaGrid(); } catch(e) { console.warn("Berita error", e); }
+            try { updateChart(); } catch(e) {}
+            try { renderPublicTables(); } catch(e) {}
+            try { renderBeritaGrid(); } catch(e) {}
             
             if(isLoggedIn) { 
                 try { renderAdminTable(); } catch(e){} 
@@ -749,9 +799,16 @@
             document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap";
             document.getElementById('tabAdminPengaturan').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap";
             
-            if (tab === 'kader') { document.getElementById('areaAdminKader').classList.remove('hidden'); document.getElementById('tabAdminKader').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; } 
-            else if (tab === 'berita') { document.getElementById('areaAdminBerita').classList.remove('hidden'); document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; } 
-            else { document.getElementById('areaAdminPengaturan').classList.remove('hidden'); document.getElementById('tabAdminPengaturan').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; }
+            if (tab === 'kader') { 
+                document.getElementById('areaAdminKader').classList.remove('hidden'); 
+                document.getElementById('tabAdminKader').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            } else if (tab === 'berita') { 
+                document.getElementById('areaAdminBerita').classList.remove('hidden'); 
+                document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            } else {
+                document.getElementById('areaAdminPengaturan').classList.remove('hidden'); 
+                document.getElementById('tabAdminPengaturan').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            }
         }
 
         function checkAuth() { isLoggedIn ? switchView('admin') : switchView('login'); }
@@ -820,31 +877,84 @@
 
         function showDetail(id) {
             const data = db.kader.find(k => k.ID === id); if(!data) return;
+            
             document.getElementById('detailFoto').src = data.Foto && data.Foto.length > 10 ? data.Foto : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-            document.getElementById('detailNama').innerText = data.Nama; document.getElementById('detailKomisariat').innerText = data.Komisariat;
+            document.getElementById('detailNama').innerText = data.Nama;
+            document.getElementById('detailKomisariat').innerText = data.Komisariat;
             document.getElementById('detailKaderTahun').innerText = data.KaderTahun || '-';
+            document.getElementById('detailNIA').innerText = data.NIA || '-';
+            
             let pendText = data.RiwayatPendidikan || '';
             if (!pendText && data.Universitas) pendText = `${data.Universitas} - ${data.Fakultas || ''} - ${data.ProgramStudi || ''}`;
             document.getElementById('detailPendidikan').innerText = pendText || 'Belum Ada';
+            
             let displayStatus = data.Status;
             if(data.Status && data.Status.includes('Aktif') && data.Bidang) displayStatus += ` (${data.JabatanBidang ? data.JabatanBidang + ' ' : ''}${data.Bidang})`;
             document.getElementById('detailStatus').innerText = displayStatus;
             document.getElementById('detailUtama').innerText = data.Pelatihan || 'Belum Ada';
             document.getElementById('detailKhusus').innerText = data.PerkaderanKhusus || 'Belum Ada';
+            
             document.getElementById('detailModal').classList.remove('hidden');
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
+
+        function exportToCSV() {
+            try {
+                if (!db.kader || db.kader.length === 0) { 
+                    Swal.fire('Info', 'Tidak ada data kader untuk diekspor', 'info'); 
+                    return; 
+                }
+                const headers = ['ID', 'Nama Lengkap', 'NIA', 'Riwayat Pendidikan', 'Kader Tahun', 'Asal Komisariat', 'Status', 'Bidang', 'Jabatan', 'Riwayat Perkaderan', 'Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email'];
+                
+                const rows = db.kader.map(k => {
+                    return [
+                        `"${k.ID || ''}"`, 
+                        `"${(k.Nama || '').replace(/"/g, '""')}"`, 
+                        `"${k.NIA || ''}"`, 
+                        `"${(k.RiwayatPendidikan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
+                        `"${k.KaderTahun || ''}"`, 
+                        `"${k.Komisariat || ''}"`, 
+                        `"${k.Status || ''}"`, 
+                        `"${k.Bidang || ''}"`, 
+                        `"${k.JabatanBidang || ''}"`, 
+                        `"${(k.Pelatihan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
+                        `"${(k.PerkaderanKhusus || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
+                        `"${k.StatusInstruktur || ''}"`, 
+                        `"${k.WA || ''}"`, 
+                        `"${k.Email || ''}"`
+                    ].join(",");
+                });
+                
+                const csvContent = headers.join(",") + "\n" + rows.join("\n");
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement("a"); 
+                link.setAttribute("href", url); 
+                link.setAttribute("download", `Data_Kader_IMM_${new Date().toISOString().slice(0,10)}.csv`);
+                document.body.appendChild(link); 
+                link.click(); 
+                document.body.removeChild(link);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+            } catch (err) {
+                Swal.fire("Error Export", err.message, "error");
+            }
+        }
 
         function renderAdminTable() {
             if(!db.kader) return;
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
+            
             let filteredKader = db.kader.filter(k => {
                 const matchSearch = (k.Nama && k.Nama.toLowerCase().includes(search));
                 const matchKomisariat = filterKomisariat === "" ? true : k.Komisariat === filterKomisariat;
                 return matchSearch && matchKomisariat;
             });
-            const tbodyKader = document.getElementById('adminTableBody'); tbodyKader.innerHTML = '';
+
+            const tbodyKader = document.getElementById('adminTableBody');
+            tbodyKader.innerHTML = '';
             filteredKader.forEach(k => {
                 tbodyKader.innerHTML += `
                     <tr class="hover:bg-gray-50">
@@ -862,7 +972,8 @@
             if(filteredKader.length === 0) tbodyKader.innerHTML = `<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
             let filteredInstruktur = filteredKader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
-            const tbodyInstruktur = document.getElementById('adminInstrukturBody'); tbodyInstruktur.innerHTML = '';
+            const tbodyInstruktur = document.getElementById('adminInstrukturBody');
+            tbodyInstruktur.innerHTML = '';
             filteredInstruktur.forEach(k => {
                 let statusInst = k.StatusInstruktur === 'Siap Bertugas' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
                 tbodyInstruktur.innerHTML += `
@@ -952,15 +1063,99 @@
             try {
                 const response = await fetch('/api/kader', { method: payload.id !== '' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const jsonRes = await response.json();
-                if(jsonRes.success) { closeModal(); loadData(); Swal.fire("Berhasil", "Data kader tersimpan", "success"); }
-                else { Swal.fire("Gagal Menyimpan", "Pesan dari database: " + (jsonRes.message || "Terdapat kolom yang belum diperbarui di database"), "error"); }
+                if(jsonRes.success) { closeModal(); Swal.fire("Berhasil", "Data kader tersimpan", "success"); loadData(); }
+                else { Swal.fire("Gagal", jsonRes.message, "error"); }
             } catch (err) { Swal.fire("Error Koneksi", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
         }
 
         function deleteKader(id) {
             Swal.fire({ title: 'Hapus Permanen?', icon: 'warning', showCancelButton: true }).then(async (result) => {
-                if (result.isConfirmed) { showLoading(true); try { await fetch(`/api/kader?id=${id}`, { method: 'DELETE' }); loadData(); } catch(err) { showLoading(false); } }
+                if (result.isConfirmed) {
+                    showLoading(true);
+                    try { await fetch(`/api/kader?id=${id}`, { method: 'DELETE' }); loadData(); } catch(err) { showLoading(false); }
+                }
             });
+        }
+
+        // ======================================
+        // LOGIKA BULK EXCEL KADER
+        // ======================================
+        function openExcelModal() {
+            try {
+                parsedExcelData = []; 
+                const fileInput = document.getElementById('excelFileInput');
+                if (fileInput) fileInput.value = '';
+                
+                const previewBody = document.getElementById('excelPreviewBody');
+                if (previewBody) {
+                    previewBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr>`;
+                }
+                
+                const btnSave = document.getElementById('btnSaveExcel');
+                if (btnSave) btnSave.disabled = true; 
+                
+                const modal = document.getElementById('excelModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                } else {
+                    throw new Error("Elemen Modal Excel tidak ditemukan di HTML.");
+                }
+            } catch (err) {
+                console.error("Open Excel Modal Error: ", err);
+                Swal.fire("Error System", "Gagal membuka modal: " + err.message, "error");
+            }
+        }
+        
+        function closeExcelModal() { document.getElementById('excelModal').classList.add('hidden'); }
+
+        function downloadExcelTemplate() {
+            const headers = ["Nama Lengkap", "Nomor WA", "Email", "NIA", "Riwayat Pendidikan (S1/S2 - Univ - Prodi)", "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan Bidang", "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"];
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{}], {header: headers}), "Template");
+            XLSX.writeFile(wb, "Template_Upload_Kader_IMM.xlsx");
+        }
+
+        function handleExcelFile(e) {
+            const file = e.target.files[0]; if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const workbook = XLSX.read(evt.target.result, {type: 'binary'});
+                const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ""});
+                parsedExcelData = json.map((row, i) => ({
+                    _index: i, nama: row["Nama Lengkap"]||"", wa: row["Nomor WA"]||"", email: row["Email"]||"", nia: row["NIA"]||"",
+                    riwayatPendidikan: row["Riwayat Pendidikan (S1/S2 - Univ - Prodi)"]||"", kaderTahun: row["Kader Tahun"]||"", komisariat: row["Asal Komisariat"]||"",
+                    status: row["Status Keanggotaan"]||"Aktif Komisariat", bidang: row["Bidang"]||"", jabatanBidang: row["Jabatan Bidang"]||"", pelatihan: row["Riwayat Perkaderan Utama"]||"",
+                    perkaderanKhusus: row["Riwayat Perkaderan Khusus"]||"", statusInstruktur: row["Status Instruktur"]||"", alamat: row["Alamat Lengkap"]||"", foto: ""
+                }));
+                renderExcelPreview();
+            }; reader.readAsBinaryString(file);
+        }
+
+        function renderExcelPreview() {
+            const tbody = document.getElementById('excelPreviewBody'); tbody.innerHTML = ''; let hasError = false;
+            if(parsedExcelData.length === 0) { document.getElementById('btnSaveExcel').disabled = true; return; }
+            parsedExcelData.forEach((row, i) => {
+                if(!row.nama || !row.wa || !row.riwayatPendidikan || !row.komisariat || !row.kaderTahun) hasError = true;
+                tbody.innerHTML += `<tr>
+                    <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.nama===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.wa===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1"><input type="text" value="${row.riwayatPendidikan}" onchange="updateExcelData(${i}, 'riwayatPendidikan', this.value)" class="w-32 text-xs p-1 border rounded focus:outline-none ${row.riwayatPendidikan===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.komisariat===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-16 text-xs p-1 border rounded focus:outline-none ${row.kaderTahun===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1"><input type="text" value="${row.status}" onchange="updateExcelData(${i}, 'status', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded"></td>
+                </tr>`;
+            });
+            document.getElementById('btnSaveExcel').disabled = hasError;
+        }
+
+        function updateExcelData(i, f, v) { parsedExcelData[i][f] = v; renderExcelPreview(); }
+        async function saveBulkExcel() {
+            const btn = document.getElementById('btnSaveExcel'); btn.disabled = true; btn.innerHTML = 'Memproses...';
+            try {
+                const res = await fetch('/api/kader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(parsedExcelData) });
+                const jsonRes = await res.json();
+                if(jsonRes.success) { closeExcelModal(); Swal.fire("Berhasil!", "Data tersimpan", "success"); loadData(); }
+                else { Swal.fire("Gagal", jsonRes.message, "error"); }
+            } catch (err) { Swal.fire("Error", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Semua Data'; }
         }
 
         // ======================================
@@ -1044,7 +1239,7 @@
 
         function renderAdminBeritaTable() {
             const tbody = document.getElementById('adminBeritaBody'); tbody.innerHTML = '';
-            if (dbBerita.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada publikasi.</td></tr>`; return; }
+            if (!dbBerita || dbBerita.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada publikasi.</td></tr>`; return; }
 
             dbBerita.forEach(b => {
                 let tgl = "-";
@@ -1106,6 +1301,7 @@
 
         function bacaBerita(id) {
             const data = dbBerita.find(b => b.ID === id); if (!data) return;
+            
             currentBeritaTitle = data.Judul;
             document.getElementById('bacaKategori').innerText = data.Kategori; document.getElementById('bacaJudul').innerText = data.Judul;
             document.getElementById('bacaPenulis').innerText = data.Penulis; 
@@ -1120,11 +1316,12 @@
             document.getElementById('bacaBeritaModal').classList.remove('hidden');
         }
         function closeBacaBerita() { document.getElementById('bacaBeritaModal').classList.add('hidden'); }
+
         function shareBerita(platform) {
             const url = window.location.href; const title = encodeURIComponent(currentBeritaTitle);
-            if (platform === 'whatsapp') window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank');
-            else if (platform === 'email') window.location.href = `mailto:?subject=${title}&body=Halo,%0A%0ASaya ingin membagikan kabar ini kepadamu:%0A${encodeURIComponent(url)}`;
-            else if (platform === 'copy') navigator.clipboard.writeText(url).then(() => { showToast('Tautan disalin!', 'success'); }).catch(() => { showToast('Gagal menyalin', 'error'); });
+            if (platform === 'whatsapp') { window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank'); } 
+            else if (platform === 'email') { window.location.href = `mailto:?subject=${title}&body=Halo,%0A%0ASaya ingin membagikan kabar ini kepadamu:%0A${encodeURIComponent(url)}`; } 
+            else if (platform === 'copy') { navigator.clipboard.writeText(url).then(() => { showToast('Tautan berhasil disalin!', 'success'); }).catch(() => { showToast('Gagal menyalin tautan.', 'error'); }); }
         }
 
         function showLoading(show) { document.getElementById('loadingOverlay').classList[show ? 'remove' : 'add']('hidden'); }
