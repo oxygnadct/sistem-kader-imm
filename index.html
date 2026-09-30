@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal PC IMM Jakarta Selatan</title>
     
+    <!-- Favicon / Thumbnail Tab Browser -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" type="image/png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -37,6 +40,7 @@
         .berita-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-bottom: 1rem; margin-top: 1rem; }
         .berita-content strong { font-weight: bold; }
         .berita-content em { font-style: italic; }
+        
         .berita-content .ql-align-center { text-align: center; }
         .berita-content .ql-align-right { text-align: right; }
         .berita-content .ql-align-justify { text-align: justify; }
@@ -71,7 +75,9 @@
                 <div class="flex items-center space-x-2 sm:space-x-6">
                     <button onclick="scrollToSection('ruangRedaksi')" class="font-bold text-sm sm:text-base hover:text-imm-yellow transition">Ruang Redaksi</button>
                     <button onclick="scrollToSection('statistikKader')" class="font-bold text-sm sm:text-base hover:text-imm-yellow transition">Statistik Kader</button>
+                    
                     <div class="border-l border-red-400 h-6 mx-2 hidden sm:block"></div>
+                    
                     <button id="navAdminBtn" onclick="checkAuth()" class="bg-white text-imm-red px-4 py-1.5 rounded-full font-bold hover:bg-gray-100 transition shadow-sm text-sm flex items-center">
                         <i class="fas fa-lock mr-1"></i> <span class="hidden sm:inline">Admin</span>
                     </button>
@@ -155,14 +161,11 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400"></i></div>
                         </div>
                         <select id="publicFilterKomisariat" onchange="renderPublicTables()" class="w-full sm:w-64 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-imm-red shadow-sm bg-white font-medium text-gray-600">
-                            <option value="">Semua Komisariat</option>
-                            <option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
-                            <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option>
-                            <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
+                            <option value="">Semua Komisariat</option><option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
+                            <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option><option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
                         </select>
                     </div>
 
-                    <!-- Tabel Publik Kader -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-users mr-2 text-imm-red"></i>Data Kader (Klik untuk Detail)</h2></div>
                         <div class="overflow-x-auto">
@@ -184,7 +187,6 @@
                         </div>
                     </div>
 
-                    <!-- Tabel Publik Instruktur -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mt-6">
                         <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-chalkboard-teacher mr-2 text-green-600"></i>Data Instruktur</h2></div>
                         <div class="overflow-x-auto">
@@ -194,6 +196,7 @@
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Instruktur</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIA</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kesiapan Bertugas</th>
                                     </tr>
                                 </thead>
@@ -309,6 +312,7 @@
                                     <th class="px-4 py-3 text-left">No WA</th>
                                     <th class="px-4 py-3 text-left">Email</th>
                                     <th class="px-4 py-3 text-left">Komisariat</th>
+                                    <th class="px-4 py-3 text-left">Kader Tahun</th>
                                     <th class="px-4 py-3 text-left">Kesiapan Bertugas</th>
                                 </tr>
                             </thead>
@@ -365,11 +369,7 @@
         </section>
     </main>
 
-    <!-- ============================================== -->
-    <!-- MODALS SECTION (Setiap Modal Hanya Ada 1 Copy) -->
-    <!-- ============================================== -->
-
-    <!-- 1. Modal Form KADER -->
+    <!-- Modal Form KADER -->
     <div id="formModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b flex justify-between">
@@ -417,7 +417,8 @@
                             <div>
                                 <label class="text-sm font-semibold">Asal Komisariat *</label>
                                 <select id="komisariat" required class="w-full px-3 py-2 border rounded bg-white" onchange="toggleKomisariatLainnya(this.value)">
-                                    <option value="">-- Pilih --</option><option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
                                     <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option>
                                     <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option><option value="Lainnya">Lainnya (Ketik Manual)</option>
                                 </select>
@@ -427,7 +428,8 @@
                             <div>
                                 <label class="text-sm font-semibold">Status Keanggotaan *</label>
                                 <select id="status" required class="w-full px-3 py-2 border rounded bg-white" onchange="toggleBidang(this.value)">
-                                    <option value="">-- Pilih Status --</option><option value="Aktif Komisariat">Aktif Komisariat</option><option value="Aktif Cabang">Aktif Cabang</option>
+                                    <option value="">-- Pilih Status --</option>
+                                    <option value="Aktif Komisariat">Aktif Komisariat</option><option value="Aktif Cabang">Aktif Cabang</option>
                                     <option value="Aktif Lembaga Semi Otonom (LSO)">Aktif Lembaga Semi Otonom (LSO)</option><option value="Aktif Lembaga Otonom (LO)">Aktif Lembaga Otonom (LO)</option>
                                     <option value="Pasif">Pasif</option><option value="Kader">Kader</option><option value="Alumni">Alumni</option>
                                 </select>
@@ -466,7 +468,7 @@
         </div>
     </div>
 
-    <!-- 2. Modal Upload Excel -->
+    <!-- Modal Upload Excel -->
     <div id="excelModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-blue-50 px-6 py-4 border-b border-blue-200 flex justify-between items-center">
@@ -485,7 +487,13 @@
                 <div class="overflow-x-auto border rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200 text-xs">
                         <thead class="bg-gray-800 text-white whitespace-nowrap">
-                            <tr><th class="px-3 py-2">Nama *</th><th class="px-3 py-2">WA *</th><th class="px-3 py-2">Riwayat Pendidikan *</th><th class="px-3 py-2">Komisariat *</th><th class="px-3 py-2">Tahun *</th></tr>
+                            <tr>
+                                <th class="px-3 py-2">Nama *</th>
+                                <th class="px-3 py-2">WA *</th>
+                                <th class="px-3 py-2">Riwayat Pendidikan *</th>
+                                <th class="px-3 py-2">Komisariat *</th>
+                                <th class="px-3 py-2">Tahun *</th>
+                            </tr>
                         </thead>
                         <tbody id="excelPreviewBody"><tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr></tbody>
                     </table>
@@ -498,7 +506,7 @@
         </div>
     </div>
 
-    <!-- 3. Modal Profil Kader Publik -->
+    <!-- Modal Profil Kader Publik -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
         <div class="bg-white rounded-xl w-full max-w-md mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="bg-imm-red p-4 text-center"><h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2></div>
@@ -519,7 +527,7 @@
         </div>
     </div>
 
-    <!-- 4. Modal Form BERITA -->
+    <!-- Modal Form BERITA -->
     <div id="beritaModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b flex justify-between">
@@ -558,7 +566,7 @@
         </div>
     </div>
 
-    <!-- 5. Modal Baca Berita -->
+    <!-- Modal Baca Berita -->
     <div id="bacaBeritaModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeBacaBerita()">
         <div class="bg-white rounded-xl w-full max-w-3xl mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <img id="bacaFoto" src="" class="w-full h-48 md:h-64 object-cover hidden">
@@ -622,10 +630,8 @@
 
         async function loadData() {
             showLoading(true);
-            
             fetchTimeout = setTimeout(() => {
-                showLoading(false); 
-                renderUI();
+                showLoading(false); Swal.fire('Koneksi Lemah', 'Tampilan dialihkan ke mode terbatas.', 'info'); renderUI();
             }, 6000);
 
             try {
@@ -665,7 +671,7 @@
             }
         }
 
-        function handleFotoUpload(event, base64Id, previewId, setMaxWidth = 400) {
+        function handleFotoUpload(event, base64Id = 'fotoBase64', previewId = 'fotoPreview', setMaxWidth = 400) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -730,7 +736,7 @@
                 document.querySelectorAll('#statAktif, #adminStatAktif').forEach(el => el.innerText = aktif);
                 document.querySelectorAll('#statKomisariat, #adminStatKomisariat').forEach(el => el.innerText = komisariat);
                 document.querySelectorAll('#statInstruktur, #adminStatInstruktur').forEach(el => el.innerText = instruktur);
-            } catch(e) { console.warn("Scorecard error", e); }
+            } catch(e) {}
             
             try {
                 if (db.config) {
@@ -744,11 +750,11 @@
                     if(inputWA) inputWA.value = db.config.ContactWA || ''; 
                     if(inputIG) inputIG.value = db.config.ContactIG || '';
                 }
-            } catch(e) { console.warn("Footer config error", e); }
+            } catch(e) {}
 
-            try { updateChart(); } catch(e) { console.warn("Chart error", e); }
-            try { renderPublicTables(); } catch(e) { console.warn("Table error", e); }
-            try { renderBeritaGrid(); } catch(e) { console.warn("Berita error", e); }
+            try { updateChart(); } catch(e) {}
+            try { renderPublicTables(); } catch(e) {}
+            try { renderBeritaGrid(); } catch(e) {}
             
             if(isLoggedIn) { 
                 try { renderAdminTable(); } catch(e){} 
@@ -873,50 +879,6 @@
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
-        function exportToCSV() {
-            try {
-                if (!db.kader || db.kader.length === 0) { 
-                    Swal.fire('Info', 'Tidak ada data kader untuk diekspor', 'info'); 
-                    return; 
-                }
-                const headers = ['ID', 'Nama Lengkap', 'NIA', 'Riwayat Pendidikan', 'Kader Tahun', 'Asal Komisariat', 'Status', 'Bidang', 'Jabatan', 'Riwayat Perkaderan', 'Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email'];
-                
-                const rows = db.kader.map(k => {
-                    return [
-                        `"${k.ID || ''}"`, 
-                        `"${(k.Nama || '').replace(/"/g, '""')}"`, 
-                        `"${k.NIA || ''}"`, 
-                        `"${(k.RiwayatPendidikan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${k.KaderTahun || ''}"`, 
-                        `"${k.Komisariat || ''}"`, 
-                        `"${k.Status || ''}"`, 
-                        `"${k.Bidang || ''}"`, 
-                        `"${k.JabatanBidang || ''}"`, 
-                        `"${(k.Pelatihan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${(k.PerkaderanKhusus || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${k.StatusInstruktur || ''}"`, 
-                        `"${k.WA || ''}"`, 
-                        `"${k.Email || ''}"`
-                    ].join(",");
-                });
-                
-                const csvContent = headers.join(",") + "\n" + rows.join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                
-                const link = document.createElement("a"); 
-                link.setAttribute("href", url); 
-                link.setAttribute("download", `Data_Kader_IMM_${new Date().toISOString().slice(0,10)}.csv`);
-                document.body.appendChild(link); 
-                link.click(); 
-                document.body.removeChild(link);
-                
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-            } catch (err) {
-                Swal.fire("Error Export", err.message, "error");
-            }
-        }
-
         function renderAdminTable() {
             if(!db.kader) return;
             const search = document.getElementById('adminSearch').value.toLowerCase();
@@ -961,10 +923,11 @@
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.WA || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
-            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="7" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function toggleKomisariatLainnya(val) {
@@ -986,9 +949,11 @@
             const fak = document.getElementById('fakTemp').value;
             const prodi = document.getElementById('prodiTemp').value;
             if(!univ || !prodi) { Swal.fire("Peringatan", "Universitas dan Prodi wajib diisi!", "warning"); return; }
+            
             const txt = document.getElementById('riwayatPendidikan');
             const newLine = `${jenjang} - ${univ} - ${fak ? fak + ' - ' : ''}${prodi}`;
             txt.value = txt.value ? txt.value + '\n' + newLine : newLine;
+            
             document.getElementById('univTemp').value = ''; document.getElementById('fakTemp').value = ''; document.getElementById('prodiTemp').value = '';
         }
 
@@ -1064,7 +1029,7 @@
                 const response = await fetch('/api/kader', { method: payload.id !== '' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const jsonRes = await response.json();
                 if(jsonRes.success) { closeModal(); loadData(); Swal.fire("Berhasil", "Data kader tersimpan", "success"); }
-                else { Swal.fire("Gagal Menyimpan", "Pesan dari database: " + (jsonRes.message || "Terdapat kolom yang belum diperbarui di database"), "error"); }
+                else { Swal.fire("Gagal Menyimpan", "Pesan dari database: " + (jsonRes.message || "Terdapat error"), "error"); }
             } catch (err) { Swal.fire("Error Koneksi", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
         }
 
@@ -1232,7 +1197,6 @@
             document.getElementById('bacaBeritaModal').classList.remove('hidden');
         }
         function closeBacaBerita() { document.getElementById('bacaBeritaModal').classList.add('hidden'); }
-
         function shareBerita(platform) {
             const url = window.location.href; const title = encodeURIComponent(currentBeritaTitle);
             if (platform === 'whatsapp') { window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank'); } 
