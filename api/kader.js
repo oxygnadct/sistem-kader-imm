@@ -9,8 +9,13 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const kaderData = await client.execute("SELECT * FROM kader ORDER BY Timestamp DESC");
-      const configData = await client.execute("SELECT * FROM config WHERE Key = 'AdminPassword'");
-      res.status(200).json({ kader: kaderData.rows, config: { AdminPassword: configData.rows[0]?.Value || 'immjakseljaya' } });
+      const configData = await client.execute("SELECT * FROM config");
+      
+      let config = {};
+      configData.rows.forEach(r => { config[r.Key] = r.Value; });
+      config.AdminPassword = config.AdminPassword || 'immjakseljaya';
+      
+      res.status(200).json({ kader: kaderData.rows, config: config });
     } 
     else if (req.method === 'POST') {
       const dataArray = Array.isArray(req.body) ? req.body : [req.body];
@@ -23,8 +28,7 @@ export default async function handler(req, res) {
           args: [
             id, timestamp, body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
             body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
-            '', '', '', body.foto || '', // Kolom lawas dibiarkan kosong agar aman
-            body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '',
+            '', '', '', body.foto || '', body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '',
             body.bidang || '', body.jabatanBidang || '', body.fakultas || '', body.programStudi || '', body.universitas || '', body.riwayatPendidikan || ''
           ]
         };
@@ -41,8 +45,7 @@ export default async function handler(req, res) {
           body.nama || '', body.wa || '', body.email || '', body.alamat || '', 
           body.komisariat || '', body.status || '', body.nia || '', body.pelatihan || '', 
           body.foto || '', body.perkaderanKhusus || '', body.statusInstruktur || '', body.kaderTahun || '', 
-          body.bidang || '', body.jabatanBidang || '', body.riwayatPendidikan || '',
-          body.id
+          body.bidang || '', body.jabatanBidang || '', body.riwayatPendidikan || '', body.id
         ]
       });
       res.status(200).json({ success: true, message: "Data berhasil diupdate!" });
@@ -53,7 +56,6 @@ export default async function handler(req, res) {
       res.status(200).json({ success: true, message: "Data berhasil dihapus!" });
     }
   } catch (error) {
-    console.error("API Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 }
