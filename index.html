@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal PC IMM Jakarta Selatan</title>
     
-    <!-- Favicon / Thumbnail Tab Browser -->
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" type="image/png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +14,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
-    <!-- Library Quill.js untuk Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
@@ -196,15 +194,11 @@
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Instruktur</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIA</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kesiapan Bertugas</th>
                                     </tr>
                                 </thead>
                                 <tbody id="publicInstrukturBody" class="bg-white divide-y divide-gray-200"></tbody>
                             </table>
-                        </div>
-                        <div id="instrukturShowMoreBtn" class="text-center p-3 border-t border-gray-100 hidden bg-gray-50">
-                            <button onclick="loadMore('instruktur')" class="text-imm-red font-semibold hover:underline text-sm">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
                         </div>
                     </div>
                 </div>
@@ -312,7 +306,6 @@
                                     <th class="px-4 py-3 text-left">No WA</th>
                                     <th class="px-4 py-3 text-left">Email</th>
                                     <th class="px-4 py-3 text-left">Komisariat</th>
-                                    <th class="px-4 py-3 text-left">Kader Tahun</th>
                                     <th class="px-4 py-3 text-left">Kesiapan Bertugas</th>
                                 </tr>
                             </thead>
@@ -509,7 +502,9 @@
     <!-- Modal Profil Kader Publik -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
         <div class="bg-white rounded-xl w-full max-w-md mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-            <div class="bg-imm-red p-4 text-center"><h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2></div>
+            <div class="bg-imm-red p-4 text-center">
+                <h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2>
+            </div>
             <div class="p-6 flex flex-col items-center">
                 <img id="detailFoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover border-4 border-gray-100 shadow-sm mb-4">
                 <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
@@ -517,13 +512,27 @@
                 <p class="text-xs font-semibold text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
                 
                 <div class="w-full mt-6 space-y-3 text-sm border-t border-gray-200 pt-4">
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span><span class="font-semibold text-gray-800" id="detailStatus">-</span></div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span></div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span></div>
-                    <div class="flex flex-col"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span></div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span>
+                        <span class="font-semibold text-gray-800" id="detailStatus">-</span>
+                    </div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span>
+                    </div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span>
+                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span>
+                    </div>
                 </div>
             </div>
-            <div class="p-4 bg-gray-50 border-t border-gray-200"><button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button></div>
+            <div class="p-4 bg-gray-50 border-t border-gray-200">
+                <button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button>
+            </div>
         </div>
     </div>
 
@@ -538,14 +547,22 @@
                 <form id="beritaForm" onsubmit="submitBerita(event)" class="space-y-4">
                     <input type="hidden" id="beritaId">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2"><label class="text-sm font-semibold">Judul Tulisan *</label><input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm font-semibold">Judul Tulisan *</label>
+                            <input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-imm-red focus:outline-none">
+                        </div>
                         <div>
                             <label class="text-sm font-semibold">Kategori *</label>
                             <select id="bKategori" required class="w-full px-3 py-2 border rounded bg-white focus:outline-none">
-                                <option value="Berita">Berita / Kabar</option><option value="Kegiatan">Informasi Kegiatan</option><option value="Opini">Opini / Artikel</option>
+                                <option value="Berita">Berita / Kabar</option>
+                                <option value="Kegiatan">Informasi Kegiatan</option>
+                                <option value="Opini">Opini / Artikel</option>
                             </select>
                         </div>
-                        <div><label class="text-sm font-semibold">Penulis *</label><input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
+                        <div>
+                            <label class="text-sm font-semibold">Penulis *</label>
+                            <input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none">
+                        </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Foto Cover (Opsional)</label>
                             <input type="file" id="bFotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'bFotoBase64', 'bFotoPreview', 800)">
@@ -554,7 +571,9 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Isi Konten *</label>
-                            <div class="bg-white"><div id="bKontenEditor"></div></div>
+                            <div class="bg-white">
+                                <div id="bKontenEditor"></div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -630,8 +649,10 @@
 
         async function loadData() {
             showLoading(true);
+            
             fetchTimeout = setTimeout(() => {
-                showLoading(false); Swal.fire('Koneksi Lemah', 'Tampilan dialihkan ke mode terbatas.', 'info'); renderUI();
+                showLoading(false); 
+                renderUI();
             }, 6000);
 
             try {
@@ -681,11 +702,15 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     let width = img.width; let height = img.height;
-                    if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    const MAX_WIDTH = setMaxWidth;
+                    const MAX_HEIGHT = setMaxWidth;
+
+                    if (width > height) { 
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } 
+                    } else { 
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } 
                     }
+                    
                     canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
@@ -736,7 +761,7 @@
                 document.querySelectorAll('#statAktif, #adminStatAktif').forEach(el => el.innerText = aktif);
                 document.querySelectorAll('#statKomisariat, #adminStatKomisariat').forEach(el => el.innerText = komisariat);
                 document.querySelectorAll('#statInstruktur, #adminStatInstruktur').forEach(el => el.innerText = instruktur);
-            } catch(e) {}
+            } catch(e) { console.warn("Scorecard error", e); }
             
             try {
                 if (db.config) {
@@ -750,11 +775,11 @@
                     if(inputWA) inputWA.value = db.config.ContactWA || ''; 
                     if(inputIG) inputIG.value = db.config.ContactIG || '';
                 }
-            } catch(e) {}
+            } catch(e) { console.warn("Footer config error", e); }
 
-            try { updateChart(); } catch(e) {}
-            try { renderPublicTables(); } catch(e) {}
-            try { renderBeritaGrid(); } catch(e) {}
+            try { updateChart(); } catch(e) { console.warn("Chart error", e); }
+            try { renderPublicTables(); } catch(e) { console.warn("Table error", e); }
+            try { renderBeritaGrid(); } catch(e) { console.warn("Berita error", e); }
             
             if(isLoggedIn) { 
                 try { renderAdminTable(); } catch(e){} 
@@ -923,11 +948,10 @@
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.WA || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
-            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="7" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function toggleKomisariatLainnya(val) {
@@ -1029,7 +1053,7 @@
                 const response = await fetch('/api/kader', { method: payload.id !== '' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const jsonRes = await response.json();
                 if(jsonRes.success) { closeModal(); loadData(); Swal.fire("Berhasil", "Data kader tersimpan", "success"); }
-                else { Swal.fire("Gagal Menyimpan", "Pesan dari database: " + (jsonRes.message || "Terdapat error"), "error"); }
+                else { Swal.fire("Gagal Menyimpan", "Pesan dari database: " + (jsonRes.message || "Terdapat kolom yang belum diperbarui di database"), "error"); }
             } catch (err) { Swal.fire("Error Koneksi", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
         }
 
