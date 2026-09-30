@@ -83,11 +83,10 @@
                 
                 <!-- BAGIAN: RUANG REDAKSI -->
                 <div id="ruangRedaksi" class="scroll-mt-24">
-                    <div class="flex justify-between items-end mb-8 border-b pb-4">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-800">Ruang Redaksi</h2>
-                            <p class="text-gray-500 mt-1">Berita, Opini & Informasi Kegiatan</p>
-                        </div>
+                    <div class="text-center mb-8 border-b pb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Ruang Redaksi</h2>
+                        <div class="w-24 h-1 bg-imm-yellow mx-auto mt-3 mb-4 rounded-full"></div>
+                        <p class="text-gray-500">Berita, Opini & Informasi Kegiatan</p>
                     </div>
                     
                     <div id="beritaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -590,6 +589,7 @@
         async function loadData() {
             showLoading(true);
             
+            // Pengaman anti-crash (timeout)
             fetchTimeout = setTimeout(() => {
                 showLoading(false);
                 Swal.fire('Koneksi Lemah', 'Tampilan dialihkan ke mode terbatas.', 'info');
@@ -597,16 +597,21 @@
             }, 6000);
 
             try {
-                const [resKader, resBerita] = await Promise.all([
-                    fetch('/api/kader'),
-                    fetch('/api/berita')
-                ]);
-                const dataKader = await resKader.json();
-                const dataBerita = await resBerita.json();
+                // Fetch secara terpisah agar jika /berita gagal, /kader tetap berhasil
+                let resKader = await fetch('/api/kader').catch(() => null);
+                let resBerita = await fetch('/api/berita').catch(() => null);
                 
+                if (resKader && resKader.ok) {
+                    let dataKader = await resKader.json();
+                    if (!dataKader.error) db = dataKader;
+                }
+                
+                if (resBerita && resBerita.ok) {
+                    let dataBerita = await resBerita.json();
+                    if (!dataBerita.error) dbBerita = dataBerita.berita || [];
+                }
+
                 clearTimeout(fetchTimeout);
-                db = dataKader; 
-                dbBerita = dataBerita.berita || [];
                 renderUI();
             } catch (e) {
                 clearTimeout(fetchTimeout);
@@ -742,7 +747,10 @@
         
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('adminPassword').value === (db.config.AdminPassword || "immjakseljaya")) {
+            // Pengaman baca password (jika db.config belum ter-load)
+            const correctPass = (db && db.config && db.config.AdminPassword) ? db.config.AdminPassword : "immjakseljaya";
+            
+            if (document.getElementById('adminPassword').value === correctPass) {
                 isLoggedIn = true; document.getElementById('adminPassword').value = '';
                 switchView('admin'); renderAdminTable(); renderAdminBeritaTable();
             } else { Swal.fire("Login Gagal", "Password salah!", "error"); }
