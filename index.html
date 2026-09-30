@@ -73,10 +73,10 @@
         <section id="publicView" class="w-full">
             
             <!-- Hero Banner -->
-            <div class="bg-gradient-to-b from-imm-red to-red-800 py-16 px-4 text-center text-white shadow-inner">
+            <div class="py-16 px-4 text-center">
                 <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-28 w-28 mx-auto mb-5 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
-                <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Portal Informasi Perkaderan</h1>
-                <p class="text-lg md:text-xl font-medium text-red-100 max-w-2xl mx-auto">Pimpinan Cabang Ikatan Mahasiswa Muhammadiyah Jakarta Selatan</p>
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Portal Informasi Perkaderan</h1>
+                <p class="text-lg md:text-xl font-bold text-imm-red max-w-2xl mx-auto">Pimpinan Cabang Ikatan Mahasiswa Muhammadiyah Jakarta Selatan</p>
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
@@ -590,7 +590,6 @@
         async function loadData() {
             showLoading(true);
             
-            // Timeout keamanan 6 detik
             fetchTimeout = setTimeout(() => {
                 showLoading(false);
                 Swal.fire('Koneksi Lemah', 'Tampilan dialihkan ke mode terbatas.', 'info');
@@ -625,7 +624,6 @@
         function scrollToSection(id) {
             if (currentView !== 'public') switchView('public');
             const element = document.getElementById(id);
-            // Memberikan jeda sangat kecil (10ms) memastikan browser sudah mengganti layar sebelum bergulir
             if (element) {
                 setTimeout(() => {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -721,7 +719,7 @@
                 document.getElementById('navAdminBtn').classList.remove('hidden');
                 document.getElementById('navLogoutBtn').classList.add('hidden');
             }
-            window.scrollTo({ top: 0, behavior: 'auto' }); // Pastikan selalu scroll ke atas saat ganti page
+            window.scrollTo({ top: 0, behavior: 'auto' }); 
         }
 
         function switchAdminTab(tab) {
@@ -750,7 +748,7 @@
             } else { Swal.fire("Login Gagal", "Password salah!", "error"); }
         }
 
-        function logout() { isLoggedIn = false; switchView('public'); }
+        function logout() { isLoggedIn = false; switchView('public'); window.scrollTo(0,0); }
 
         // ======================================
         // LOGIKA KADER
