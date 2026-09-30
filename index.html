@@ -57,6 +57,7 @@
         <h2 class="text-xl font-bold text-gray-700">Memuat Portal...</h2>
     </div>
 
+    <!-- Navbar -->
     <nav class="bg-imm-red text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -89,14 +90,13 @@
         <!-- TAMPILAN PUBLIK -->
         <section id="publicView" class="w-full">
             <div class="py-16 px-4 text-center">
-                <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-28 w-28 mx-auto mb-5 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
+                <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-28 w-28 mx-auto mb-5 object-contain">
                 <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Portal Informasi Perkaderan</h1>
                 <p class="text-lg md:text-xl font-bold text-imm-red max-w-2xl mx-auto">Pimpinan Cabang Ikatan Mahasiswa Muhammadiyah Jakarta Selatan</p>
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
-                
-                <!-- BAGIAN: RUANG REDAKSI -->
+                <!-- RUANG REDAKSI -->
                 <div id="ruangRedaksi" class="scroll-mt-24">
                     <div class="text-center mb-10 border-b pb-8">
                         <h2 class="text-3xl font-bold text-gray-800">Ruang Redaksi</h2>
@@ -110,17 +110,17 @@
                     </div>
                     
                     <div id="beritaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                    <div id="beritaShowMoreBtn" class="text-center mt-6 hidden">
-                        <button onclick="loadMoreBerita()" class="text-imm-red font-semibold hover:underline text-sm border border-imm-red px-6 py-2 rounded-full hover:bg-red-50 transition">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
+                    <div id="beritaShowMoreBtn" class="text-center mt-8 hidden">
+                        <button onclick="loadMoreBerita()" class="text-imm-red font-bold hover:underline text-sm border-2 border-imm-red px-6 py-2.5 rounded-full hover:bg-red-50 transition">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
                     </div>
                     <div id="beritaEmpty" class="hidden text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i><p class="text-gray-500">Belum ada publikasi atau pencarian tidak ditemukan.</p>
+                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i><p class="text-gray-500">Belum ada publikasi saat ini.</p>
                     </div>
                 </div>
 
                 <div class="w-full h-px bg-gray-200"></div>
 
-                <!-- BAGIAN: STATISTIK KADER -->
+                <!-- STATISTIK KADER -->
                 <div id="statistikKader" class="scroll-mt-24 space-y-8 pb-10">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-bold text-gray-800">Statistik Kader</h2>
@@ -163,6 +163,7 @@
                         </select>
                     </div>
 
+                    <!-- Tabel Kader -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-users mr-2 text-imm-red"></i>Data Kader (Klik untuk Detail)</h2></div>
                         <div class="overflow-x-auto">
@@ -184,6 +185,7 @@
                         </div>
                     </div>
 
+                    <!-- Tabel Instruktur -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mt-6">
                         <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-chalkboard-teacher mr-2 text-green-600"></i>Data Instruktur</h2></div>
                         <div class="overflow-x-auto">
@@ -203,7 +205,7 @@
                 </div>
             </div>
 
-            <!-- BAGIAN: FOOTER & KONTAK (Kolaborasi) -->
+            <!-- FOOTER & KONTAK -->
             <footer class="bg-white border-t border-gray-200 pt-10 pb-8 mt-10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div class="flex flex-col items-center md:items-start text-center md:text-left">
@@ -219,12 +221,10 @@
                     <div class="flex flex-col items-center md:items-end">
                         <span class="text-sm font-bold text-gray-700 mb-3">Hubungi Kami:</span>
                         <div class="flex flex-wrap justify-center gap-3">
-                            <!-- Link WhatsApp: Ganti tulisan nomor hp setelah tanda '=' -->
-                            <a href="https://wa.me/6280000000000" target="_blank" class="flex items-center text-sm font-semibold text-green-700 hover:text-white hover:bg-green-600 bg-green-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-green-100">
+                            <a id="footerWA" href="#" target="_blank" class="flex items-center text-sm font-semibold text-green-700 hover:text-white hover:bg-green-600 bg-green-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-green-100">
                                 <i class="fab fa-whatsapp text-xl mr-2"></i> WhatsApp
                             </a>
-                            <!-- Link Instagram: Ganti link url di bagian href -->
-                            <a href="https://instagram.com/pckimmjaksel" target="_blank" class="flex items-center text-sm font-semibold text-pink-700 hover:text-white hover:bg-pink-600 bg-pink-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-pink-100">
+                            <a id="footerIG" href="#" target="_blank" class="flex items-center text-sm font-semibold text-pink-700 hover:text-white hover:bg-pink-600 bg-pink-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-pink-100">
                                 <i class="fab fa-instagram text-xl mr-2"></i> Instagram
                             </a>
                         </div>
@@ -253,9 +253,10 @@
             <div class="flex flex-col sm:flex-row justify-between items-end mb-6 border-b pb-4">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
-                    <div class="flex space-x-4 mt-4">
-                        <button onclick="switchAdminTab('kader')" id="tabAdminKader" class="pb-2 font-bold text-imm-red border-b-2 border-imm-red transition">Database Kader</button>
-                        <button onclick="switchAdminTab('berita')" id="tabAdminBerita" class="pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition">Portal Berita</button>
+                    <div class="flex space-x-4 mt-4 overflow-x-auto pb-1">
+                        <button onclick="switchAdminTab('kader')" id="tabAdminKader" class="pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap">Database Kader</button>
+                        <button onclick="switchAdminTab('berita')" id="tabAdminBerita" class="pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap">Portal Berita</button>
+                        <button onclick="switchAdminTab('pengaturan')" id="tabAdminPengaturan" class="pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap">Pengaturan Web</button>
                     </div>
                 </div>
             </div>
@@ -336,6 +337,26 @@
                             </thead>
                             <tbody id="adminBeritaBody" class="bg-white divide-y divide-gray-200"></tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AREA PENGATURAN WEB (BARU) -->
+            <div id="areaAdminPengaturan" class="space-y-6 hidden">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-2xl">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i class="fas fa-cog mr-2"></i> Pengaturan Kontak (Footer)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-semibold block mb-1">Nomor WhatsApp Admin</label>
+                            <input type="number" id="setContactWA" placeholder="Cth: 6281234567890 (Gunakan awalan 62)" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-imm-red outline-none">
+                            <p class="text-xs text-gray-500 mt-1">Pastikan diawali kode negara tanpa tanda plus (+). Contoh: 62812...</p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-semibold block mb-1">Username Instagram</label>
+                            <input type="text" id="setContactIG" placeholder="Cth: pckimmjaksel" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-imm-red outline-none">
+                            <p class="text-xs text-gray-500 mt-1">Tulis username tanpa menggunakan @. Contoh: pckimmjaksel</p>
+                        </div>
+                        <button onclick="saveWebConfig()" class="w-full bg-imm-red text-white py-3 rounded-lg font-bold hover:bg-red-800 transition shadow-md mt-4">Simpan Pengaturan</button>
                     </div>
                 </div>
             </div>
@@ -450,8 +471,12 @@
                 <button onclick="closeExcelModal()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="p-6 flex flex-col sm:flex-row gap-4 border-b border-gray-100 bg-gray-50 items-center justify-between">
-                <div><button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button></div>
-                <div class="border-l pl-4 border-gray-300"><input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm"></div>
+                <div>
+                    <button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button>
+                </div>
+                <div class="border-l pl-4 border-gray-300">
+                    <input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm">
+                </div>
             </div>
             <div class="p-4 overflow-y-auto flex-grow custom-scrollbar bg-white">
                 <div class="overflow-x-auto border rounded-lg">
@@ -530,7 +555,7 @@
         </div>
     </div>
 
-    <!-- Modal Baca Berita (DENGAN FITUR SHARE) -->
+    <!-- Modal Baca Berita -->
     <div id="bacaBeritaModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeBacaBerita()">
         <div class="bg-white rounded-xl w-full max-w-3xl mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <img id="bacaFoto" src="" class="w-full h-48 md:h-64 object-cover hidden">
@@ -540,7 +565,6 @@
                 <p class="text-sm text-gray-500 mb-6 border-b pb-4"><i class="fas fa-user-edit mr-1"></i> <span id="bacaPenulis">Penulis</span> &nbsp;|&nbsp; <i class="far fa-calendar-alt mr-1"></i> <span id="bacaTanggal">Tanggal</span></p>
                 <div id="bacaKonten" class="berita-content text-gray-800 text-sm md:text-base leading-relaxed"></div>
                 
-                <!-- FITUR SHARE BARU -->
                 <div class="mt-10 pt-5 border-t border-gray-200 flex items-center justify-between">
                     <span class="text-sm font-semibold text-gray-500">Bagikan tulisan ini:</span>
                     <div class="flex space-x-4">
@@ -562,13 +586,13 @@
         let currentView = 'public'; 
         let isLoggedIn = false;
         let limitKader = 7;
-        let limitBerita = 3; // Batas awal berita yang ditampilkan
+        let limitBerita = 6; 
         let limitInstruktur = 7;
         let chartInstance = null;
         let parsedExcelData = []; 
         let fetchTimeout;
         let quill; 
-        let currentBeritaTitle = ""; // Untuk fitur share
+        let currentBeritaTitle = ""; 
         
         document.addEventListener("DOMContentLoaded", () => { 
             loadData(); 
@@ -664,6 +688,18 @@
             document.querySelectorAll('#statAktif, #adminStatAktif').forEach(el => el.innerText = aktif);
             document.querySelectorAll('#statKomisariat, #adminStatKomisariat').forEach(el => el.innerText = komisariat);
             document.querySelectorAll('#statInstruktur, #adminStatInstruktur').forEach(el => el.innerText = instruktur);
+            
+            // Konfigurasi Footer Dinamis
+            if (db.config) {
+                document.getElementById('footerWA').href = `https://wa.me/${db.config.ContactWA || '6280000000000'}`;
+                document.getElementById('footerIG').href = `https://instagram.com/${db.config.ContactIG || 'pckimmjaksel'}`;
+                
+                // Isi form pengaturan admin jika ada
+                const inputWA = document.getElementById('setContactWA');
+                const inputIG = document.getElementById('setContactIG');
+                if(inputWA) inputWA.value = db.config.ContactWA || '';
+                if(inputIG) inputIG.value = db.config.ContactIG || '';
+            }
 
             updateChart(); renderPublicTables(); renderBeritaGrid();
             if(isLoggedIn) { renderAdminTable(); renderAdminBeritaTable(); }
@@ -679,11 +715,24 @@
         }
 
         function switchAdminTab(tab) {
-            document.getElementById('areaAdminKader').classList.add('hidden'); document.getElementById('areaAdminBerita').classList.add('hidden');
-            document.getElementById('tabAdminKader').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition";
-            document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition";
-            if (tab === 'kader') { document.getElementById('areaAdminKader').classList.remove('hidden'); document.getElementById('tabAdminKader').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition"; } 
-            else { document.getElementById('areaAdminBerita').classList.remove('hidden'); document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition"; }
+            document.getElementById('areaAdminKader').classList.add('hidden'); 
+            document.getElementById('areaAdminBerita').classList.add('hidden');
+            document.getElementById('areaAdminPengaturan').classList.add('hidden');
+            
+            document.getElementById('tabAdminKader').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap";
+            document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap";
+            document.getElementById('tabAdminPengaturan').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition whitespace-nowrap";
+            
+            if (tab === 'kader') { 
+                document.getElementById('areaAdminKader').classList.remove('hidden'); 
+                document.getElementById('tabAdminKader').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            } else if (tab === 'berita') { 
+                document.getElementById('areaAdminBerita').classList.remove('hidden'); 
+                document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            } else {
+                document.getElementById('areaAdminPengaturan').classList.remove('hidden'); 
+                document.getElementById('tabAdminPengaturan').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition whitespace-nowrap"; 
+            }
         }
 
         function checkAuth() { isLoggedIn ? switchView('admin') : switchView('login'); }
@@ -882,9 +931,9 @@
             try {
                 const response = await fetch('/api/kader', { method: payload.id !== '' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const jsonRes = await response.json();
-                if(jsonRes.success) { closeModal(); Swal.fire("Berhasil!", "Data kader tersimpan.", "success"); loadData(); }
+                if(jsonRes.success) { closeModal(); loadData(); Swal.fire("Berhasil", "Data kader tersimpan", "success"); }
                 else { Swal.fire("Gagal", jsonRes.message, "error"); }
-            } catch (err) { Swal.fire("Error Koneksi", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
+            } catch (err) { Swal.fire("Error", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
         }
 
         function deleteKader(id) {
@@ -894,7 +943,35 @@
         }
 
         // ======================================
-        // LOGIKA BERITA (CMS PORTAL)
+        // LOGIKA KONTAK/CONFIG FOOTER
+        // ======================================
+        async function saveWebConfig() {
+            const wa = document.getElementById('setContactWA').value;
+            const ig = document.getElementById('setContactIG').value;
+            
+            try {
+                showLoading(true);
+                const response = await fetch('/api/config', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ wa: wa, ig: ig }) 
+                });
+                const res = await response.json();
+                if(res.success) { 
+                    Swal.fire("Berhasil!", "Pengaturan Web Diperbarui.", "success"); 
+                    loadData(); 
+                } else { 
+                    Swal.fire("Gagal", res.message, "error"); 
+                }
+            } catch(e) {
+                Swal.fire("Error Koneksi", e.message, "error");
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ======================================
+        // LOGIKA BERITA
         // ======================================
         function renderBeritaGrid() {
             const searchInput = document.getElementById('publicBeritaSearch');
@@ -952,10 +1029,7 @@
             }
         }
 
-        function loadMoreBerita() {
-            limitBerita += 3;
-            renderBeritaGrid();
-        }
+        function loadMoreBerita() { limitBerita += 3; renderBeritaGrid(); }
 
         function renderAdminBeritaTable() {
             const tbody = document.getElementById('adminBeritaBody'); tbody.innerHTML = '';
@@ -1017,42 +1091,26 @@
 
         function bacaBerita(id) {
             const data = dbBerita.find(b => b.ID === id); if (!data) return;
-            
-            // Simpan judul untuk fitur share
             currentBeritaTitle = data.Judul;
-
-            document.getElementById('bacaKategori').innerText = data.Kategori; 
-            document.getElementById('bacaJudul').innerText = data.Judul;
+            document.getElementById('bacaKategori').innerText = data.Kategori; document.getElementById('bacaJudul').innerText = data.Judul;
             document.getElementById('bacaPenulis').innerText = data.Penulis; 
             document.getElementById('bacaKonten').innerHTML = data.Konten; 
             document.getElementById('bacaTanggal').innerText = new Date(data.Timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
-            
             const fotoEl = document.getElementById('bacaFoto');
             if (data.FotoCover && data.FotoCover.length > 20) { fotoEl.src = data.FotoCover; fotoEl.classList.remove('hidden'); } else { fotoEl.classList.add('hidden'); }
             document.getElementById('bacaBeritaModal').classList.remove('hidden');
         }
         function closeBacaBerita() { document.getElementById('bacaBeritaModal').classList.add('hidden'); }
-
-        // FITUR SHARE BERITA
         function shareBerita(platform) {
-            const url = window.location.href;
-            const title = encodeURIComponent(currentBeritaTitle);
-            
-            if (platform === 'whatsapp') {
-                window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank');
-            } 
-            else if (platform === 'email') {
-                window.location.href = `mailto:?subject=${title}&body=Halo,%0A%0ASaya ingin membagikan kabar ini kepadamu:%0A${encodeURIComponent(url)}`;
-            } 
-            else if (platform === 'copy') {
-                navigator.clipboard.writeText(url).then(() => {
-                    showToast('Tautan berhasil disalin!', 'success');
-                }).catch(() => {
-                    showToast('Gagal menyalin tautan.', 'error');
-                });
-            }
+            const url = window.location.href; const title = encodeURIComponent(currentBeritaTitle);
+            if (platform === 'whatsapp') window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank');
+            else if (platform === 'email') window.location.href = `mailto:?subject=${title}&body=Halo,%0A%0ASaya ingin membagikan kabar ini kepadamu:%0A${encodeURIComponent(url)}`;
+            else if (platform === 'copy') navigator.clipboard.writeText(url).then(() => { showToast('Tautan disalin!', 'success'); }).catch(() => { showToast('Gagal menyalin', 'error'); });
         }
 
+        // ======================================
+        // UTILITAS LAINNYA
+        // ======================================
         function showLoading(show) { document.getElementById('loadingOverlay').classList[show ? 'remove' : 'add']('hidden'); }
         function showToast(message, type = 'success') { const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 }); Toast.fire({ icon: type, title: message }); }
     </script>
