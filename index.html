@@ -11,7 +11,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <!-- Library Quill.js untuk Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -28,7 +27,6 @@
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         html { scroll-behavior: smooth; } 
         
-        /* Desain Khusus HTML Quill di Mode Baca */
         .berita-content h1 { font-size: 1.75rem; font-weight: bold; margin-bottom: 0.5rem; margin-top: 1rem; }
         .berita-content h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; margin-top: 1rem; }
         .berita-content h3 { font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; margin-top: 1rem; }
@@ -51,7 +49,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Loading Screen -->
     <div id="loadingOverlay" class="fixed inset-0 bg-white/80 z-50 flex flex-col items-center justify-center backdrop-blur-sm transition-opacity duration-300">
         <button onclick="forceCloseLoading()" class="absolute top-6 right-6 text-gray-500 hover:text-red-600 bg-gray-100 hover:bg-red-50 p-3 rounded-full transition-all shadow-md flex items-center justify-center z-50">
             <i class="fas fa-times text-2xl"></i>
@@ -60,7 +57,6 @@
         <h2 class="text-xl font-bold text-gray-700">Memuat Portal...</h2>
     </div>
 
-    <!-- Navbar Interaktif -->
     <nav class="bg-imm-red text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -90,13 +86,8 @@
     </nav>
 
     <main class="flex-grow w-full">
-        
-        <!-- ======================= -->
-        <!-- 1. TAMPILAN PUBLIK (Satu Halaman) -->
-        <!-- ======================= -->
+        <!-- TAMPILAN PUBLIK -->
         <section id="publicView" class="w-full">
-            
-            <!-- Hero Banner -->
             <div class="py-16 px-4 text-center">
                 <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" alt="Logo IMM" class="h-28 w-28 mx-auto mb-5 object-contain" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/id/5/52/Ikatan_Mahasiswa_Muhammadiyah.png';">
                 <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Portal Informasi Perkaderan</h1>
@@ -112,35 +103,30 @@
                         <div class="w-24 h-1 bg-imm-yellow mx-auto mt-3 mb-4 rounded-full"></div>
                         <p class="text-gray-500 mb-6">Berita, Opini & Informasi Kegiatan</p>
                         
-                        <!-- KOTAK PENCARIAN BERITA -->
                         <div class="max-w-2xl mx-auto relative">
                             <input type="text" id="publicBeritaSearch" onkeyup="renderBeritaGrid()" placeholder="Cari judul berita, penulis, atau kategori..." class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-imm-red focus:border-transparent shadow-sm transition">
-                            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </div>
+                            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400"></i></div>
                         </div>
                     </div>
                     
-                    <div id="beritaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Konten Berita -->
+                    <div id="beritaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    <div id="beritaShowMoreBtn" class="text-center mt-6 hidden">
+                        <button onclick="loadMoreBerita()" class="text-imm-red font-semibold hover:underline text-sm border border-imm-red px-6 py-2 rounded-full hover:bg-red-50 transition">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
                     </div>
                     <div id="beritaEmpty" class="hidden text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i>
-                        <p class="text-gray-500">Belum ada publikasi atau pencarian tidak ditemukan.</p>
+                        <i class="fas fa-newspaper text-4xl text-gray-300 mb-3"></i><p class="text-gray-500">Belum ada publikasi atau pencarian tidak ditemukan.</p>
                     </div>
                 </div>
 
-                <!-- Pembatas Visual -->
                 <div class="w-full h-px bg-gray-200"></div>
 
                 <!-- BAGIAN: STATISTIK KADER -->
-                <div id="statistikKader" class="scroll-mt-24 space-y-8">
+                <div id="statistikKader" class="scroll-mt-24 space-y-8 pb-10">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-bold text-gray-800">Statistik Kader</h2>
                         <div class="w-24 h-1 bg-imm-yellow mx-auto mt-3 rounded-full"></div>
                     </div>
 
-                    <!-- Chart & Scorecard -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-1 bg-white p-5 rounded-xl shadow-md border border-gray-100 flex flex-col justify-center">
                             <h3 class="text-center text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Sebaran Komisariat</h3>
@@ -149,44 +135,34 @@
                         <div class="lg:col-span-2 grid grid-cols-2 gap-4">
                             <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-imm-red flex flex-col justify-center items-center text-center">
                                 <div class="p-2 bg-red-100 rounded-full text-imm-red mb-2"><i class="fas fa-users text-xl"></i></div>
-                                <h3 class="text-3xl font-bold text-gray-800" id="statTotal">0</h3>
-                                <p class="text-xs text-gray-500 font-semibold uppercase mt-1">Total Kader</p>
+                                <h3 class="text-3xl font-bold text-gray-800" id="statTotal">0</h3><p class="text-xs text-gray-500 font-semibold uppercase mt-1">Total Kader</p>
                             </div>
                             <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-imm-yellow flex flex-col justify-center items-center text-center">
                                 <div class="p-2 bg-yellow-100 rounded-full text-yellow-600 mb-2"><i class="fas fa-fire text-xl"></i></div>
-                                <h3 class="text-3xl font-bold text-gray-800" id="statAktif">0</h3>
-                                <p class="text-xs text-gray-500 font-semibold uppercase mt-1">Kader Aktif</p>
+                                <h3 class="text-3xl font-bold text-gray-800" id="statAktif">0</h3><p class="text-xs text-gray-500 font-semibold uppercase mt-1">Kader Aktif</p>
                             </div>
                             <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-500 flex flex-col justify-center items-center text-center">
                                 <div class="p-2 bg-blue-100 rounded-full text-blue-500 mb-2"><i class="fas fa-building text-xl"></i></div>
-                                <h3 class="text-3xl font-bold text-gray-800" id="statKomisariat">0</h3>
-                                <p class="text-xs text-gray-500 font-semibold uppercase mt-1">Komisariat</p>
+                                <h3 class="text-3xl font-bold text-gray-800" id="statKomisariat">0</h3><p class="text-xs text-gray-500 font-semibold uppercase mt-1">Komisariat</p>
                             </div>
                             <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500 flex flex-col justify-center items-center text-center">
                                 <div class="p-2 bg-green-100 rounded-full text-green-500 mb-2"><i class="fas fa-chalkboard-teacher text-xl"></i></div>
-                                <h3 class="text-3xl font-bold text-gray-800" id="statInstruktur">0</h3>
-                                <p class="text-xs text-gray-500 font-semibold uppercase mt-1">Instruktur</p>
+                                <h3 class="text-3xl font-bold text-gray-800" id="statInstruktur">0</h3><p class="text-xs text-gray-500 font-semibold uppercase mt-1">Instruktur</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Global Search & Filter -->
                     <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto pt-4">
                         <div class="relative flex-grow">
                             <input type="text" id="publicSearch" onkeyup="renderPublicTables()" placeholder="Ketik nama kader..." class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-imm-red shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400"></i></div>
                         </div>
                         <select id="publicFilterKomisariat" onchange="renderPublicTables()" class="w-full sm:w-64 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-imm-red shadow-sm bg-white font-medium text-gray-600">
-                            <option value="">Semua Komisariat</option>
-                            <option value="PK IMM FISIP">PK IMM FISIP</option>
-                            <option value="PK IMM FAI">PK IMM FAI</option>
-                            <option value="PK IMM Psikologi">PK IMM Psikologi</option>
-                            <option value="PK IMM FIKes">PK IMM FIKes</option>
-                            <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
+                            <option value="">Semua Komisariat</option><option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
+                            <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option><option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
                         </select>
                     </div>
 
-                    <!-- Tabel Publik -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="p-4 border-b border-gray-200 bg-gray-50"><h2 class="font-bold text-gray-800"><i class="fas fa-users mr-2 text-imm-red"></i>Data Kader (Klik untuk Detail)</h2></div>
                         <div class="overflow-x-auto">
@@ -226,11 +202,38 @@
                     </div>
                 </div>
             </div>
+
+            <!-- BAGIAN: FOOTER & KONTAK (Kolaborasi) -->
+            <footer class="bg-white border-t border-gray-200 pt-10 pb-8 mt-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <img src="https://lh3.googleusercontent.com/d/1FkV23U7JRyLCQxwr5HA9aXk8syxCHE00" class="h-14 w-14 object-contain drop-shadow-sm" alt="Logo IMM Jaksel">
+                            <img src="https://lh3.googleusercontent.com/d/1Lc4sIxrxrfkQb0gFxpKSVI6jypU3T1ZT" class="h-16 w-16 object-contain drop-shadow-sm" alt="Logo KIC Jaksel">
+                        </div>
+                        <p class="text-xs text-gray-500 max-w-md leading-relaxed">
+                            Portal Database & Informasi ini dikelola atas kolaborasi bersama antara <strong class="text-gray-700">Bidang Kader PC IMM Jakarta Selatan</strong> dengan <strong class="text-gray-700">Korps Instruktur Cabang (KIC) PC IMM Jakarta Selatan</strong>.
+                        </p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center md:items-end">
+                        <span class="text-sm font-bold text-gray-700 mb-3">Hubungi Kami:</span>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <!-- Link WhatsApp: Ganti tulisan nomor hp setelah tanda '=' -->
+                            <a href="https://wa.me/6280000000000" target="_blank" class="flex items-center text-sm font-semibold text-green-700 hover:text-white hover:bg-green-600 bg-green-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-green-100">
+                                <i class="fab fa-whatsapp text-xl mr-2"></i> WhatsApp
+                            </a>
+                            <!-- Link Instagram: Ganti link url di bagian href -->
+                            <a href="https://instagram.com/pckimmjaksel" target="_blank" class="flex items-center text-sm font-semibold text-pink-700 hover:text-white hover:bg-pink-600 bg-pink-50 px-4 py-2.5 rounded-xl transition shadow-sm border border-pink-100">
+                                <i class="fab fa-instagram text-xl mr-2"></i> Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </section>
 
-        <!-- ======================= -->
-        <!-- TAMPILAN LOGIN ADMIN -->
-        <!-- ======================= -->
+        <!-- LOGIN ADMIN -->
         <section id="loginView" class="hidden max-w-md mx-auto mt-20 px-4">
             <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-imm-red">
                 <div class="text-center mb-6">
@@ -238,20 +241,15 @@
                     <h2 class="text-2xl font-bold text-gray-800">Login Kolaborator</h2>
                 </div>
                 <form onsubmit="handleLogin(event)">
-                    <div class="mb-5">
-                        <input type="password" id="adminPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imm-red" placeholder="Password Admin">
-                    </div>
+                    <div class="mb-5"><input type="password" id="adminPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-imm-red" placeholder="Password Admin"></div>
                     <button type="submit" class="w-full bg-imm-red hover:bg-red-800 text-white font-bold py-3 px-4 rounded-lg shadow-md">Masuk</button>
                     <button type="button" onclick="switchView('public')" class="w-full mt-3 text-sm text-gray-500 hover:text-imm-red">Kembali ke Portal Publik</button>
                 </form>
             </div>
         </section>
 
-        <!-- ======================= -->
         <!-- DASHBOARD ADMIN -->
-        <!-- ======================= -->
         <section id="adminView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-            
             <div class="flex flex-col sm:flex-row justify-between items-end mb-6 border-b pb-4">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
@@ -273,12 +271,8 @@
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input type="text" id="adminSearch" onkeyup="renderAdminTable()" placeholder="Cari nama kader..." class="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-imm-red focus:outline-none">
                     <select id="adminFilterKomisariat" onchange="renderAdminTable()" class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-600 focus:ring-2 focus:ring-imm-red focus:outline-none">
-                        <option value="">Semua Komisariat</option>
-                        <option value="PK IMM FISIP">PK IMM FISIP</option>
-                        <option value="PK IMM FAI">PK IMM FAI</option>
-                        <option value="PK IMM Psikologi">PK IMM Psikologi</option>
-                        <option value="PK IMM FIKes">PK IMM FIKes</option>
-                        <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
+                        <option value="">Semua Komisariat</option><option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
+                        <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option><option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
                     </select>
                 </div>
 
@@ -340,9 +334,7 @@
                                     <th class="px-4 py-3 text-left">Penulis</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminBeritaBody" class="bg-white divide-y divide-gray-200">
-                                <!-- Data Berita Admin -->
-                            </tbody>
+                            <tbody id="adminBeritaBody" class="bg-white divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
                 </div>
@@ -350,10 +342,6 @@
 
         </section>
     </main>
-
-    <!-- ============================================== -->
-    <!-- MODALS SECTION -->
-    <!-- ============================================== -->
 
     <!-- Modal Form KADER -->
     <div id="formModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
@@ -404,12 +392,9 @@
                                 <label class="text-sm font-semibold">Asal Komisariat *</label>
                                 <select id="komisariat" required class="w-full px-3 py-2 border rounded bg-white" onchange="toggleKomisariatLainnya(this.value)">
                                     <option value="">-- Pilih --</option>
-                                    <option value="PK IMM FISIP">PK IMM FISIP</option>
-                                    <option value="PK IMM FAI">PK IMM FAI</option>
-                                    <option value="PK IMM Psikologi">PK IMM Psikologi</option>
-                                    <option value="PK IMM FIKes">PK IMM FIKes</option>
-                                    <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option>
-                                    <option value="Lainnya">Lainnya (Ketik Manual)</option>
+                                    <option value="PK IMM FISIP">PK IMM FISIP</option><option value="PK IMM FAI">PK IMM FAI</option>
+                                    <option value="PK IMM Psikologi">PK IMM Psikologi</option><option value="PK IMM FIKes">PK IMM FIKes</option>
+                                    <option value="PK IMM Buya Hamka">PK IMM Buya Hamka</option><option value="Lainnya">Lainnya (Ketik Manual)</option>
                                 </select>
                                 <input type="text" id="komisariatLainnya" placeholder="Ketik nama komisariat..." class="w-full px-3 py-2 border rounded mt-2 hidden">
                             </div>
@@ -418,28 +403,22 @@
                                 <label class="text-sm font-semibold">Status Keanggotaan *</label>
                                 <select id="status" required class="w-full px-3 py-2 border rounded bg-white" onchange="toggleBidang(this.value)">
                                     <option value="">-- Pilih Status --</option>
-                                    <option value="Aktif Komisariat">Aktif Komisariat</option>
-                                    <option value="Aktif Cabang">Aktif Cabang</option>
-                                    <option value="Aktif Lembaga Semi Otonom (LSO)">Aktif Lembaga Semi Otonom (LSO)</option>
-                                    <option value="Aktif Lembaga Otonom (LO)">Aktif Lembaga Otonom (LO)</option>
-                                    <option value="Pasif">Pasif</option>
-                                    <option value="Kader">Kader</option>
-                                    <option value="Alumni">Alumni</option>
+                                    <option value="Aktif Komisariat">Aktif Komisariat</option><option value="Aktif Cabang">Aktif Cabang</option>
+                                    <option value="Aktif Lembaga Semi Otonom (LSO)">Aktif Lembaga Semi Otonom (LSO)</option><option value="Aktif Lembaga Otonom (LO)">Aktif Lembaga Otonom (LO)</option>
+                                    <option value="Pasif">Pasif</option><option value="Kader">Kader</option><option value="Alumni">Alumni</option>
                                 </select>
                             </div>
 
                             <div id="bidangField" class="hidden">
-                                <label class="text-sm font-semibold text-imm-red">Bidang Apa *</label>
-                                <input type="text" id="bidang" placeholder="Cth: Bidang Kader" class="w-full px-3 py-2 border border-red-200 rounded">
+                                <label class="text-sm font-semibold text-imm-red">Bidang Apa *</label><input type="text" id="bidang" placeholder="Cth: Bidang Kader" class="w-full px-3 py-2 border border-red-200 rounded">
                             </div>
                             <div id="jabatanBidangField" class="hidden">
-                                <label class="text-sm font-semibold text-imm-red">Sebagai Apa *</label>
-                                <input type="text" id="jabatanBidang" placeholder="Cth: Ketua Bidang" class="w-full px-3 py-2 border border-red-200 rounded">
+                                <label class="text-sm font-semibold text-imm-red">Sebagai Apa *</label><input type="text" id="jabatanBidang" placeholder="Cth: Ketua Bidang" class="w-full px-3 py-2 border border-red-200 rounded">
                             </div>
                             
                             <div class="md:col-span-2">
                                 <label class="text-sm font-semibold">Riwayat Lengkap Perkaderan Utama (Opsional)</label>
-                                <textarea id="pelatihan" rows="3" placeholder="Contoh format:\n1. DAD PK IMM FAI (2022)\n2. DAM PC IMM Jaksel (2023)" class="w-full px-3 py-2 border rounded bg-white whitespace-pre-wrap"></textarea>
+                                <textarea id="pelatihan" rows="3" placeholder="Contoh format:\n1. DAD PK IMM FAI (2022)" class="w-full px-3 py-2 border rounded bg-white whitespace-pre-wrap"></textarea>
                             </div>
                             <div class="md:col-span-2">
                                 <label class="text-sm font-semibold">Riwayat Lengkap Perkaderan Khusus (Opsional)</label>
@@ -449,9 +428,7 @@
                             <div class="md:col-span-2 mt-2">
                                 <label class="text-sm font-semibold text-green-700">Identifikasi Instruktur</label>
                                 <select id="statusInstruktur" class="w-full px-3 py-2 border border-green-300 rounded bg-green-50">
-                                    <option value="">-- Bukan Instruktur --</option>
-                                    <option value="Siap Bertugas">Instruktur - Siap Bertugas</option>
-                                    <option value="Tidak Siap Bertugas">Instruktur - Tidak Siap Bertugas</option>
+                                    <option value="">-- Bukan Instruktur --</option><option value="Siap Bertugas">Instruktur - Siap Bertugas</option><option value="Tidak Siap Bertugas">Instruktur - Tidak Siap Bertugas</option>
                                 </select>
                             </div>
                         </div>
@@ -473,24 +450,14 @@
                 <button onclick="closeExcelModal()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="p-6 flex flex-col sm:flex-row gap-4 border-b border-gray-100 bg-gray-50 items-center justify-between">
-                <div>
-                    <button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button>
-                </div>
-                <div class="border-l pl-4 border-gray-300">
-                    <input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm">
-                </div>
+                <div><button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button></div>
+                <div class="border-l pl-4 border-gray-300"><input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm"></div>
             </div>
             <div class="p-4 overflow-y-auto flex-grow custom-scrollbar bg-white">
                 <div class="overflow-x-auto border rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200 text-xs">
                         <thead class="bg-gray-800 text-white whitespace-nowrap">
-                            <tr>
-                                <th class="px-3 py-2">Nama *</th>
-                                <th class="px-3 py-2">WA *</th>
-                                <th class="px-3 py-2">Riwayat Pendidikan *</th>
-                                <th class="px-3 py-2">Komisariat *</th>
-                                <th class="px-3 py-2">Tahun *</th>
-                            </tr>
+                            <tr><th class="px-3 py-2">Nama *</th><th class="px-3 py-2">WA *</th><th class="px-3 py-2">Riwayat Pendidikan *</th><th class="px-3 py-2">Komisariat *</th><th class="px-3 py-2">Tahun *</th></tr>
                         </thead>
                         <tbody id="excelPreviewBody"><tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr></tbody>
                     </table>
@@ -506,9 +473,7 @@
     <!-- Modal Profil Kader Publik -->
     <div id="detailModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeDetailModal()">
         <div class="bg-white rounded-xl w-full max-w-md mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-            <div class="bg-imm-red p-4 text-center">
-                <h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2>
-            </div>
+            <div class="bg-imm-red p-4 text-center"><h2 class="text-white font-bold text-lg tracking-wider">PROFIL KADER</h2></div>
             <div class="p-6 flex flex-col items-center">
                 <img id="detailFoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover border-4 border-gray-100 shadow-sm mb-4">
                 <h3 class="text-xl font-bold text-gray-900 text-center" id="detailNama">Nama Kader</h3>
@@ -516,31 +481,17 @@
                 <p class="text-xs font-semibold text-gray-500 text-center mt-1">NIA: <span id="detailNIA">-</span></p>
                 
                 <div class="w-full mt-6 space-y-3 text-sm border-t border-gray-200 pt-4">
-                    <div class="flex flex-col border-b border-gray-100 pb-2">
-                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span>
-                        <span class="font-semibold text-gray-800" id="detailStatus">-</span>
-                    </div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2">
-                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span>
-                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span>
-                    </div>
-                    <div class="flex flex-col border-b border-gray-100 pb-2">
-                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span>
-                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span>
-                        <span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span>
-                    </div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Status Keanggotaan</span><span class="font-semibold text-gray-800" id="detailStatus">-</span></div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Pendidikan</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailPendidikan">-</span></div>
+                    <div class="flex flex-col border-b border-gray-100 pb-2"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Utama</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailUtama">-</span></div>
+                    <div class="flex flex-col"><span class="text-gray-500 text-xs uppercase font-bold tracking-wider mb-1">Riwayat Perkaderan Khusus</span><span class="font-medium text-gray-800 whitespace-pre-wrap leading-relaxed" id="detailKhusus">-</span></div>
                 </div>
             </div>
-            <div class="p-4 bg-gray-50 border-t border-gray-200">
-                <button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button>
-            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-200"><button onclick="closeDetailModal()" class="w-full bg-gray-200 text-gray-800 text-sm font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Profil</button></div>
         </div>
     </div>
 
-    <!-- Modal Form BERITA (Dengan Rich Text Editor Diperbarui) -->
+    <!-- Modal Form BERITA -->
     <div id="beritaModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b flex justify-between">
@@ -551,22 +502,14 @@
                 <form id="beritaForm" onsubmit="submitBerita(event)" class="space-y-4">
                     <input type="hidden" id="beritaId">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <label class="text-sm font-semibold">Judul Tulisan *</label>
-                            <input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:ring-1 focus:ring-imm-red focus:outline-none">
-                        </div>
+                        <div class="md:col-span-2"><label class="text-sm font-semibold">Judul Tulisan *</label><input type="text" id="bJudul" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
                         <div>
                             <label class="text-sm font-semibold">Kategori *</label>
                             <select id="bKategori" required class="w-full px-3 py-2 border rounded bg-white focus:outline-none">
-                                <option value="Berita">Berita / Kabar</option>
-                                <option value="Kegiatan">Informasi Kegiatan</option>
-                                <option value="Opini">Opini / Artikel</option>
+                                <option value="Berita">Berita / Kabar</option><option value="Kegiatan">Informasi Kegiatan</option><option value="Opini">Opini / Artikel</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="text-sm font-semibold">Penulis *</label>
-                            <input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none">
-                        </div>
+                        <div><label class="text-sm font-semibold">Penulis *</label><input type="text" id="bPenulis" required class="w-full px-3 py-2 border rounded focus:outline-none"></div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Foto Cover (Opsional)</label>
                             <input type="file" id="bFotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'bFotoBase64', 'bFotoPreview', 800)">
@@ -575,9 +518,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Isi Konten *</label>
-                            <div class="bg-white">
-                                <div id="bKontenEditor"></div>
-                            </div>
+                            <div class="bg-white"><div id="bKontenEditor"></div></div>
                         </div>
                     </div>
                 </form>
@@ -589,7 +530,7 @@
         </div>
     </div>
 
-    <!-- Modal Baca Berita -->
+    <!-- Modal Baca Berita (DENGAN FITUR SHARE) -->
     <div id="bacaBeritaModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity" onclick="closeBacaBerita()">
         <div class="bg-white rounded-xl w-full max-w-3xl mx-auto overflow-hidden text-gray-800 shadow-2xl custom-scrollbar max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <img id="bacaFoto" src="" class="w-full h-48 md:h-64 object-cover hidden">
@@ -598,10 +539,18 @@
                 <h2 id="bacaJudul" class="text-2xl md:text-4xl font-bold mt-3 mb-2 leading-tight">Judul Berita</h2>
                 <p class="text-sm text-gray-500 mb-6 border-b pb-4"><i class="fas fa-user-edit mr-1"></i> <span id="bacaPenulis">Penulis</span> &nbsp;|&nbsp; <i class="far fa-calendar-alt mr-1"></i> <span id="bacaTanggal">Tanggal</span></p>
                 <div id="bacaKonten" class="berita-content text-gray-800 text-sm md:text-base leading-relaxed"></div>
+                
+                <!-- FITUR SHARE BARU -->
+                <div class="mt-10 pt-5 border-t border-gray-200 flex items-center justify-between">
+                    <span class="text-sm font-semibold text-gray-500">Bagikan tulisan ini:</span>
+                    <div class="flex space-x-4">
+                        <button onclick="shareBerita('whatsapp')" class="text-green-500 hover:text-green-600 text-2xl transition transform hover:scale-110" title="Bagikan ke WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                        <button onclick="shareBerita('email')" class="text-gray-500 hover:text-gray-700 text-2xl transition transform hover:scale-110" title="Bagikan ke Email"><i class="fas fa-envelope"></i></button>
+                        <button onclick="shareBerita('copy')" class="text-blue-500 hover:text-blue-600 text-2xl transition transform hover:scale-110" title="Salin Tautan"><i class="fas fa-link"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="p-4 bg-gray-50 border-t border-gray-200">
-                <button onclick="closeBacaBerita()" class="w-full bg-gray-200 text-gray-800 font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup</button>
-            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-200"><button onclick="closeBacaBerita()" class="w-full bg-gray-200 text-gray-800 font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition">Tutup Berita</button></div>
         </div>
     </div>
 
@@ -613,16 +562,16 @@
         let currentView = 'public'; 
         let isLoggedIn = false;
         let limitKader = 7;
+        let limitBerita = 3; // Batas awal berita yang ditampilkan
         let limitInstruktur = 7;
         let chartInstance = null;
         let parsedExcelData = []; 
         let fetchTimeout;
         let quill; 
+        let currentBeritaTitle = ""; // Untuk fitur share
         
         document.addEventListener("DOMContentLoaded", () => { 
             loadData(); 
-            
-            // Inisialisasi Quill Editor dengan Fitur Alignment
             quill = new Quill('#bKontenEditor', {
                 theme: 'snow',
                 placeholder: 'Ketik isi berita/artikel di sini...',
@@ -671,9 +620,7 @@
         }
 
         function handleFotoUpload(event, base64Id = 'fotoBase64', previewId = 'fotoPreview', setMaxWidth = 400) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+            const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -684,11 +631,9 @@
                     else { if (height > setMaxWidth) { width *= setMaxWidth / height; height = setMaxWidth; } }
                     canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                    
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.8); 
                     document.getElementById(base64Id).value = dataUrl;
-                    const preview = document.getElementById(previewId);
-                    preview.src = dataUrl; preview.classList.remove('hidden');
+                    const preview = document.getElementById(previewId); preview.src = dataUrl; preview.classList.remove('hidden');
                 }
                 img.src = e.target.result;
             }
@@ -699,7 +644,6 @@
             const ctx = document.getElementById('komisariatChart').getContext('2d');
             const counts = {}; db.kader.forEach(k => { counts[k.Komisariat || 'Lainnya'] = (counts[k.Komisariat || 'Lainnya'] || 0) + 1; });
             const labels = Object.keys(counts); const data = Object.values(counts);
-            
             if (chartInstance) {
                 chartInstance.data.labels = labels; chartInstance.data.datasets[0].data = data; chartInstance.update();
             } else {
@@ -729,7 +673,6 @@
             currentView = view;
             ['publicView', 'loginView', 'adminView'].forEach(v => document.getElementById(v).classList.add('hidden'));
             document.getElementById(view + 'View').classList.remove('hidden');
-            
             if (isLoggedIn) { document.getElementById('navAdminBtn').classList.add('hidden'); document.getElementById('navLogoutBtn').classList.remove('hidden'); } 
             else { document.getElementById('navAdminBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden'); }
             window.scrollTo({ top: 0, behavior: 'auto' }); 
@@ -739,7 +682,6 @@
             document.getElementById('areaAdminKader').classList.add('hidden'); document.getElementById('areaAdminBerita').classList.add('hidden');
             document.getElementById('tabAdminKader').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition";
             document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-gray-500 border-b-2 border-transparent hover:text-imm-red transition";
-            
             if (tab === 'kader') { document.getElementById('areaAdminKader').classList.remove('hidden'); document.getElementById('tabAdminKader').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition"; } 
             else { document.getElementById('areaAdminBerita').classList.remove('hidden'); document.getElementById('tabAdminBerita').className = "pb-2 font-bold text-imm-red border-b-2 border-imm-red transition"; }
         }
@@ -809,21 +751,17 @@
 
         function showDetail(id) {
             const data = db.kader.find(k => k.ID === id); if(!data) return;
-            
             document.getElementById('detailFoto').src = data.Foto && data.Foto.length > 10 ? data.Foto : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
             document.getElementById('detailNama').innerText = data.Nama; document.getElementById('detailKomisariat').innerText = data.Komisariat;
             document.getElementById('detailKaderTahun').innerText = data.KaderTahun || '-';
-            
             let pendText = data.RiwayatPendidikan || '';
             if (!pendText && data.Universitas) pendText = `${data.Universitas} - ${data.Fakultas || ''} - ${data.ProgramStudi || ''}`;
             document.getElementById('detailPendidikan').innerText = pendText || 'Belum Ada';
-            
             let displayStatus = data.Status;
             if(data.Status && data.Status.includes('Aktif') && data.Bidang) displayStatus += ` (${data.JabatanBidang ? data.JabatanBidang + ' ' : ''}${data.Bidang})`;
             document.getElementById('detailStatus').innerText = displayStatus;
             document.getElementById('detailUtama').innerText = data.Pelatihan || 'Belum Ada';
             document.getElementById('detailKhusus').innerText = data.PerkaderanKhusus || 'Belum Ada';
-            
             document.getElementById('detailModal').classList.remove('hidden');
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
@@ -831,13 +769,11 @@
         function renderAdminTable() {
             const search = document.getElementById('adminSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('adminFilterKomisariat').value;
-            
             let filteredKader = db.kader.filter(k => {
                 const matchSearch = (k.Nama && k.Nama.toLowerCase().includes(search));
                 const matchKomisariat = filterKomisariat === "" ? true : k.Komisariat === filterKomisariat;
                 return matchSearch && matchKomisariat;
             });
-
             const tbodyKader = document.getElementById('adminTableBody'); tbodyKader.innerHTML = '';
             filteredKader.forEach(k => {
                 tbodyKader.innerHTML += `
@@ -894,11 +830,9 @@
             const fak = document.getElementById('fakTemp').value;
             const prodi = document.getElementById('prodiTemp').value;
             if(!univ || !prodi) { Swal.fire("Peringatan", "Universitas dan Prodi wajib diisi!", "warning"); return; }
-            
             const txt = document.getElementById('riwayatPendidikan');
             const newLine = `${jenjang} - ${univ} - ${fak ? fak + ' - ' : ''}${prodi}`;
             txt.value = txt.value ? txt.value + '\n' + newLine : newLine;
-            
             document.getElementById('univTemp').value = ''; document.getElementById('fakTemp').value = ''; document.getElementById('prodiTemp').value = '';
         }
 
@@ -948,86 +882,15 @@
             try {
                 const response = await fetch('/api/kader', { method: payload.id !== '' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const jsonRes = await response.json();
-                if(jsonRes.success) { closeModal(); loadData(); } else { Swal.fire("Gagal", jsonRes.message, "error"); }
-            } catch (err) { Swal.fire("Error", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
+                if(jsonRes.success) { closeModal(); Swal.fire("Berhasil!", "Data kader tersimpan.", "success"); loadData(); }
+                else { Swal.fire("Gagal", jsonRes.message, "error"); }
+            } catch (err) { Swal.fire("Error Koneksi", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data'; }
         }
 
         function deleteKader(id) {
             Swal.fire({ title: 'Hapus Permanen?', icon: 'warning', showCancelButton: true }).then(async (result) => {
                 if (result.isConfirmed) { showLoading(true); try { await fetch(`/api/kader?id=${id}`, { method: 'DELETE' }); loadData(); } catch(err) { showLoading(false); } }
             });
-        }
-
-        function exportToCSV() {
-            if(db.kader.length === 0) { showToast('Tidak ada data', 'warning'); return; }
-            const headers = ['ID', 'Nama Lengkap', 'NIA', 'Riwayat Pendidikan', 'Kader Tahun', 'Asal Komisariat', 'Status', 'Bidang', 'Jabatan', 'Riwayat Perkaderan', 'Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email'];
-            const rows = db.kader.map(k => [
-                `"${k.ID||''}"`, `"${k.Nama||''}"`, `"${k.NIA||''}"`, `"${(k.RiwayatPendidikan||'').replace(/\n/g, ' | ')}"`, `"${k.KaderTahun||''}"`, `"${k.Komisariat||''}"`, 
-                `"${k.Status||''}"`, `"${k.Bidang||''}"`, `"${k.JabatanBidang||''}"`, `"${(k.Pelatihan||'').replace(/\n/g, ' | ')}"`, `"${(k.PerkaderanKhusus||'').replace(/\n/g, ' | ')}"`, `"${k.StatusInstruktur||''}"`, `"${k.WA||''}"`, `"${k.Email||''}"`
-            ]);
-            let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
-            const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", `Data_Kader_IMM_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        }
-
-        // ======================================
-        // LOGIKA BULK EXCEL KADER
-        // ======================================
-        function openExcelModal() {
-            parsedExcelData = []; document.getElementById('excelFileInput').value = '';
-            document.getElementById('excelPreviewBody').innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr>`;
-            document.getElementById('btnSaveExcel').disabled = true; document.getElementById('excelModal').classList.remove('hidden');
-        }
-        function closeExcelModal() { document.getElementById('excelModal').classList.add('hidden'); }
-
-        function downloadExcelTemplate() {
-            const headers = ["Nama Lengkap", "Nomor WA", "Email", "NIA", "Riwayat Pendidikan (S1/S2 - Univ - Prodi)", "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan Bidang", "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"];
-            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{}], {header: headers}), "Template");
-            XLSX.writeFile(wb, "Template_Upload_Kader_IMM.xlsx");
-        }
-
-        function handleExcelFile(e) {
-            const file = e.target.files[0]; if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const workbook = XLSX.read(evt.target.result, {type: 'binary'});
-                const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ""});
-                parsedExcelData = json.map((row, i) => ({
-                    _index: i, nama: row["Nama Lengkap"]||"", wa: row["Nomor WA"]||"", email: row["Email"]||"", nia: row["NIA"]||"",
-                    riwayatPendidikan: row["Riwayat Pendidikan (S1/S2 - Univ - Prodi)"]||"", kaderTahun: row["Kader Tahun"]||"", komisariat: row["Asal Komisariat"]||"",
-                    status: row["Status Keanggotaan"]||"Aktif Komisariat", bidang: row["Bidang"]||"", jabatanBidang: row["Jabatan Bidang"]||"", pelatihan: row["Riwayat Perkaderan Utama"]||"",
-                    perkaderanKhusus: row["Riwayat Perkaderan Khusus"]||"", statusInstruktur: row["Status Instruktur"]||"", alamat: row["Alamat Lengkap"]||"", foto: ""
-                }));
-                renderExcelPreview();
-            }; reader.readAsBinaryString(file);
-        }
-
-        function renderExcelPreview() {
-            const tbody = document.getElementById('excelPreviewBody'); tbody.innerHTML = ''; let hasError = false;
-            if(parsedExcelData.length === 0) { document.getElementById('btnSaveExcel').disabled = true; return; }
-            parsedExcelData.forEach((row, i) => {
-                if(!row.nama || !row.wa || !row.riwayatPendidikan || !row.komisariat || !row.kaderTahun) hasError = true;
-                tbody.innerHTML += `<tr>
-                    <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.nama===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.wa===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.riwayatPendidikan}" onchange="updateExcelData(${i}, 'riwayatPendidikan', this.value)" class="w-32 text-xs p-1 border rounded focus:outline-none ${row.riwayatPendidikan===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.komisariat===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-16 text-xs p-1 border rounded focus:outline-none ${row.kaderTahun===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.status}" onchange="updateExcelData(${i}, 'status', this.value)" class="w-24 text-xs p-1 border-gray-200 rounded"></td>
-                </tr>`;
-            });
-            document.getElementById('btnSaveExcel').disabled = hasError;
-        }
-
-        function updateExcelData(i, f, v) { parsedExcelData[i][f] = v; renderExcelPreview(); }
-        async function saveBulkExcel() {
-            const btn = document.getElementById('btnSaveExcel'); btn.disabled = true; btn.innerHTML = 'Memproses...';
-            try {
-                const res = await fetch('/api/kader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(parsedExcelData) });
-                const jsonRes = await res.json();
-                if(jsonRes.success) { closeExcelModal(); Swal.fire("Berhasil!", "Data tersimpan", "success"); loadData(); }
-                else { Swal.fire("Gagal", jsonRes.message, "error"); }
-            } catch (err) { Swal.fire("Error", err.message, "error"); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Semua Data'; }
         }
 
         // ======================================
@@ -1038,9 +901,11 @@
             const search = searchInput ? searchInput.value.toLowerCase() : '';
             const grid = document.getElementById('beritaGrid');
             const empty = document.getElementById('beritaEmpty');
-            grid.innerHTML = '';
+            const btnMore = document.getElementById('beritaShowMoreBtn');
             
+            grid.innerHTML = '';
             let filteredBerita = dbBerita;
+            
             if (search) {
                 filteredBerita = dbBerita.filter(b => 
                     (b.Judul && b.Judul.toLowerCase().includes(search)) || 
@@ -1050,11 +915,15 @@
             }
 
             if (filteredBerita.length === 0) {
-                grid.classList.add('hidden'); empty.classList.remove('hidden'); return;
+                grid.classList.add('hidden'); empty.classList.remove('hidden'); 
+                if(btnMore) btnMore.classList.add('hidden');
+                return;
             }
+            
             grid.classList.remove('hidden'); empty.classList.add('hidden');
 
-            filteredBerita.forEach(b => {
+            let slicedBerita = filteredBerita.slice(0, limitBerita);
+            slicedBerita.forEach(b => {
                 const defaultImg = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80";
                 const img = b.FotoCover && b.FotoCover.length > 20 ? b.FotoCover : defaultImg;
                 const tgl = new Date(b.Timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
@@ -1076,6 +945,16 @@
                         </div>
                     </div>`;
             });
+
+            if(btnMore) {
+                if(filteredBerita.length > limitBerita) btnMore.classList.remove('hidden');
+                else btnMore.classList.add('hidden');
+            }
+        }
+
+        function loadMoreBerita() {
+            limitBerita += 3;
+            renderBeritaGrid();
         }
 
         function renderAdminBeritaTable() {
@@ -1138,7 +1017,12 @@
 
         function bacaBerita(id) {
             const data = dbBerita.find(b => b.ID === id); if (!data) return;
-            document.getElementById('bacaKategori').innerText = data.Kategori; document.getElementById('bacaJudul').innerText = data.Judul;
+            
+            // Simpan judul untuk fitur share
+            currentBeritaTitle = data.Judul;
+
+            document.getElementById('bacaKategori').innerText = data.Kategori; 
+            document.getElementById('bacaJudul').innerText = data.Judul;
             document.getElementById('bacaPenulis').innerText = data.Penulis; 
             document.getElementById('bacaKonten').innerHTML = data.Konten; 
             document.getElementById('bacaTanggal').innerText = new Date(data.Timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
@@ -1148,6 +1032,26 @@
             document.getElementById('bacaBeritaModal').classList.remove('hidden');
         }
         function closeBacaBerita() { document.getElementById('bacaBeritaModal').classList.add('hidden'); }
+
+        // FITUR SHARE BERITA
+        function shareBerita(platform) {
+            const url = window.location.href;
+            const title = encodeURIComponent(currentBeritaTitle);
+            
+            if (platform === 'whatsapp') {
+                window.open(`https://wa.me/?text=Baca kabar terbaru: *${title}*%0A%0ASelengkapnya di: ${encodeURIComponent(url)}`, '_blank');
+            } 
+            else if (platform === 'email') {
+                window.location.href = `mailto:?subject=${title}&body=Halo,%0A%0ASaya ingin membagikan kabar ini kepadamu:%0A${encodeURIComponent(url)}`;
+            } 
+            else if (platform === 'copy') {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('Tautan berhasil disalin!', 'success');
+                }).catch(() => {
+                    showToast('Gagal menyalin tautan.', 'error');
+                });
+            }
+        }
 
         function showLoading(show) { document.getElementById('loadingOverlay').classList[show ? 'remove' : 'add']('hidden'); }
         function showToast(message, type = 'success') { const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 }); Toast.fire({ icon: type, title: message }); }
