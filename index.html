@@ -357,7 +357,7 @@
                             
                             <div class="md:col-span-2 mt-2">
                                 <label class="text-sm font-semibold">Unggah Foto (Opsional)</label>
-                                <input type="file" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'fotoBase64', 'fotoPreview')">
+                                <input type="file" id="fotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'fotoBase64', 'fotoPreview')">
                                 <input type="hidden" id="fotoBase64">
                                 <img id="fotoPreview" class="hidden w-24 h-24 mt-2 object-cover rounded-md border shadow-sm" src="">
                             </div>
@@ -537,7 +537,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-sm font-semibold">Foto Cover (Opsional)</label>
-                            <input type="file" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'bFotoBase64', 'bFotoPreview', 800)">
+                            <input type="file" id="bFotoUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-sm bg-white" onchange="handleFotoUpload(event, 'bFotoBase64', 'bFotoPreview', 800)">
                             <input type="hidden" id="bFotoBase64">
                             <img id="bFotoPreview" class="hidden w-full h-40 mt-2 object-cover rounded-md border shadow-sm" src="">
                         </div>
@@ -571,7 +571,6 @@
         </div>
     </div>
 
-
     <!-- LOGIKA JAVASCRIPT -->
     <script>
         let db = { kader: [], config: {} };
@@ -589,7 +588,6 @@
         async function loadData() {
             showLoading(true);
             
-            // Pengaman anti-crash (timeout)
             fetchTimeout = setTimeout(() => {
                 showLoading(false);
                 Swal.fire('Koneksi Lemah', 'Tampilan dialihkan ke mode terbatas.', 'info');
@@ -597,7 +595,6 @@
             }, 6000);
 
             try {
-                // Fetch secara terpisah agar jika /berita gagal, /kader tetap berhasil
                 let resKader = await fetch('/api/kader').catch(() => null);
                 let resBerita = await fetch('/api/berita').catch(() => null);
                 
@@ -747,7 +744,6 @@
         
         function handleLogin(e) {
             e.preventDefault();
-            // Pengaman baca password (jika db.config belum ter-load)
             const correctPass = (db && db.config && db.config.AdminPassword) ? db.config.AdminPassword : "immjakseljaya";
             
             if (document.getElementById('adminPassword').value === correctPass) {
@@ -758,9 +754,6 @@
 
         function logout() { isLoggedIn = false; switchView('public'); window.scrollTo(0,0); }
 
-        // ======================================
-        // LOGIKA KADER
-        // ======================================
         function renderPublicTables() {
             const search = document.getElementById('publicSearch').value.toLowerCase();
             const filterKomisariat = document.getElementById('publicFilterKomisariat').value; 
@@ -773,7 +766,6 @@
 
             let filteredInstruktur = filteredKader.filter(k => k.StatusInstruktur === 'Siap Bertugas' || k.StatusInstruktur === 'Tidak Siap Bertugas');
 
-            // Kader Publik
             const tKader = document.getElementById('publicKaderBody');
             tKader.innerHTML = '';
             let slicedKader = filteredKader.slice(0, limitKader);
@@ -791,7 +783,6 @@
             document.getElementById('kaderShowMoreBtn').style.display = filteredKader.length > limitKader ? 'block' : 'none';
             if(slicedKader.length === 0) tKader.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td></tr>`;
 
-            // Instruktur Publik
             const tInstruktur = document.getElementById('publicInstrukturBody');
             tInstruktur.innerHTML = '';
             let slicedInstruktur = filteredInstruktur.slice(0, limitInstruktur);
