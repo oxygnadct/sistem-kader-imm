@@ -39,6 +39,7 @@
         .berita-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-bottom: 1rem; margin-top: 1rem; }
         .berita-content strong { font-weight: bold; }
         .berita-content em { font-style: italic; }
+        
         .berita-content .ql-align-center { text-align: center; }
         .berita-content .ql-align-right { text-align: right; }
         .berita-content .ql-align-justify { text-align: justify; }
@@ -194,14 +195,12 @@
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Instruktur</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIA</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Komisariat</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kader Tahun</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kesiapan Bertugas</th>
                                     </tr>
                                 </thead>
                                 <tbody id="publicInstrukturBody" class="bg-white divide-y divide-gray-200"></tbody>
                             </table>
-                        </div>
-                        <div id="instrukturShowMoreBtn" class="text-center p-3 border-t border-gray-100 hidden bg-gray-50">
-                            <button onclick="loadMore('instruktur')" class="text-imm-red font-semibold hover:underline text-sm">Tampilkan Lebih Banyak <i class="fas fa-chevron-down ml-1"></i></button>
                         </div>
                     </div>
                 </div>
@@ -309,6 +308,7 @@
                                     <th class="px-4 py-3 text-left">No WA</th>
                                     <th class="px-4 py-3 text-left">Email</th>
                                     <th class="px-4 py-3 text-left">Komisariat</th>
+                                    <th class="px-4 py-3 text-left">Kader Tahun</th>
                                     <th class="px-4 py-3 text-left">Kesiapan Bertugas</th>
                                 </tr>
                             </thead>
@@ -464,40 +464,55 @@
         </div>
     </div>
 
-    <!-- Modal Upload Excel -->
+    <!-- Modal Upload Excel (DIPERBARUI KE 16 KOLOM) -->
     <div id="excelModal" class="fixed inset-0 bg-gray-900/75 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-blue-50 px-6 py-4 border-b border-blue-200 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-blue-900"><i class="fas fa-file-excel mr-2"></i>Upload Data Massal</h3>
+                <h3 class="text-xl font-bold text-blue-900"><i class="fas fa-file-excel mr-2"></i>Upload Data Massal (Bulk)</h3>
                 <button onclick="closeExcelModal()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="p-6 flex flex-col sm:flex-row gap-4 border-b border-gray-100 bg-gray-50 items-center justify-between">
                 <div>
+                    <p class="text-sm text-gray-600 mb-2">1. Unduh template Excel (semua 16 kolom otomatis terbaca).</p>
                     <button onclick="downloadExcelTemplate()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm"><i class="fas fa-download mr-1"></i> Unduh Template</button>
                 </div>
                 <div class="border-l pl-4 border-gray-300">
+                    <p class="text-sm text-gray-600 mb-2">2. Unggah file Excel yang sudah diisi lengkap.</p>
                     <input type="file" id="excelFileInput" accept=".xlsx, .xls" onchange="handleExcelFile(event)" class="text-sm">
                 </div>
             </div>
-            <div class="p-4 overflow-y-auto flex-grow custom-scrollbar bg-white">
-                <div class="overflow-x-auto border rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200 text-xs">
-                        <thead class="bg-gray-800 text-white whitespace-nowrap">
+            <div class="p-0 overflow-hidden flex-grow custom-scrollbar bg-white flex flex-col">
+                <div class="overflow-x-auto overflow-y-auto max-h-[50vh] w-full">
+                    <table class="min-w-max divide-y divide-gray-200 text-xs">
+                        <thead class="bg-gray-800 text-white whitespace-nowrap sticky top-0 z-10">
                             <tr>
-                                <th class="px-3 py-2">Nama *</th>
-                                <th class="px-3 py-2">WA *</th>
-                                <th class="px-3 py-2">Riwayat Pendidikan *</th>
-                                <th class="px-3 py-2">Komisariat *</th>
-                                <th class="px-3 py-2">Tahun *</th>
+                                <th class="px-2 py-2 text-left">Nama *</th>
+                                <th class="px-2 py-2 text-left">No WA *</th>
+                                <th class="px-2 py-2 text-left">Email</th>
+                                <th class="px-2 py-2 text-left">NIA</th>
+                                <th class="px-2 py-2 text-left">Universitas</th>
+                                <th class="px-2 py-2 text-left">Fakultas</th>
+                                <th class="px-2 py-2 text-left">Prodi</th>
+                                <th class="px-2 py-2 text-left">Tahun *</th>
+                                <th class="px-2 py-2 text-left">Komisariat *</th>
+                                <th class="px-2 py-2 text-left">Status</th>
+                                <th class="px-2 py-2 text-left">Bidang</th>
+                                <th class="px-2 py-2 text-left">Jabatan</th>
+                                <th class="px-2 py-2 text-left">Utama</th>
+                                <th class="px-2 py-2 text-left">Khusus</th>
+                                <th class="px-2 py-2 text-left">Instruktur</th>
+                                <th class="px-2 py-2 text-left">Alamat</th>
                             </tr>
                         </thead>
-                        <tbody id="excelPreviewBody"><tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr></tbody>
+                        <tbody id="excelPreviewBody" class="divide-y divide-gray-100">
+                            <tr><td colspan="16" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
             <div class="bg-gray-50 px-6 py-4 border-t flex justify-end space-x-3">
-                <button type="button" onclick="closeExcelModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100">Batal</button>
-                <button type="button" id="btnSaveExcel" onclick="saveBulkExcel()" disabled class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-400">Simpan Semua Data</button>
+                <button type="button" onclick="closeExcelModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100 font-medium">Batal</button>
+                <button type="button" id="btnSaveExcel" onclick="saveBulkExcel()" disabled class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-400 font-medium transition shadow-sm">Simpan Semua Data</button>
             </div>
         </div>
     </div>
@@ -881,50 +896,6 @@
         }
         function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
-        function exportToCSV() {
-            try {
-                if (!db.kader || db.kader.length === 0) { 
-                    Swal.fire('Info', 'Tidak ada data kader untuk diekspor', 'info'); 
-                    return; 
-                }
-                const headers = ['ID', 'Nama Lengkap', 'NIA', 'Riwayat Pendidikan', 'Kader Tahun', 'Asal Komisariat', 'Status', 'Bidang', 'Jabatan', 'Riwayat Perkaderan', 'Perkaderan Khusus', 'Status Instruktur', 'Nomor WA', 'Email'];
-                
-                const rows = db.kader.map(k => {
-                    return [
-                        `"${k.ID || ''}"`, 
-                        `"${(k.Nama || '').replace(/"/g, '""')}"`, 
-                        `"${k.NIA || ''}"`, 
-                        `"${(k.RiwayatPendidikan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${k.KaderTahun || ''}"`, 
-                        `"${k.Komisariat || ''}"`, 
-                        `"${k.Status || ''}"`, 
-                        `"${k.Bidang || ''}"`, 
-                        `"${k.JabatanBidang || ''}"`, 
-                        `"${(k.Pelatihan || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${(k.PerkaderanKhusus || '').replace(/"/g, '""').replace(/\n/g, ' | ')}"`, 
-                        `"${k.StatusInstruktur || ''}"`, 
-                        `"${k.WA || ''}"`, 
-                        `"${k.Email || ''}"`
-                    ].join(",");
-                });
-                
-                const csvContent = headers.join(",") + "\n" + rows.join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                
-                const link = document.createElement("a"); 
-                link.setAttribute("href", url); 
-                link.setAttribute("download", `Data_Kader_IMM_${new Date().toISOString().slice(0,10)}.csv`);
-                document.body.appendChild(link); 
-                link.click(); 
-                document.body.removeChild(link);
-                
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-            } catch (err) {
-                Swal.fire("Error Export", err.message, "error");
-            }
-        }
-
         function renderAdminTable() {
             if(!db.kader) return;
             const search = document.getElementById('adminSearch').value.toLowerCase();
@@ -969,10 +940,11 @@
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.WA || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Email || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.Komisariat}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${k.KaderTahun || '-'}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 text-xs font-semibold rounded-full ${statusInst}">${k.StatusInstruktur}</span></td>
                     </tr>`;
             });
-            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
+            if(filteredInstruktur.length === 0) tbodyInstruktur.innerHTML = `<tr><td colspan="7" class="px-4 py-4 text-center text-gray-500">Tidak ada data instruktur</td></tr>`;
         }
 
         function toggleKomisariatLainnya(val) {
@@ -1098,7 +1070,7 @@
                 
                 const previewBody = document.getElementById('excelPreviewBody');
                 if (previewBody) {
-                    previewBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr>`;
+                    previewBody.innerHTML = `<tr><td colspan="16" class="p-8 text-center text-gray-400">Belum ada file diunggah</td></tr>`;
                 }
                 
                 const btnSave = document.getElementById('btnSaveExcel');
@@ -1119,7 +1091,7 @@
         function closeExcelModal() { document.getElementById('excelModal').classList.add('hidden'); }
 
         function downloadExcelTemplate() {
-            const headers = ["Nama Lengkap", "Nomor WA", "Email", "NIA", "Riwayat Pendidikan (S1/S2 - Univ - Prodi)", "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan Bidang", "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"];
+            const headers = ["Nama Lengkap", "Nomor WA", "Email", "NIA", "Universitas", "Fakultas", "Program Studi", "Kader Tahun", "Asal Komisariat", "Status Keanggotaan", "Bidang", "Jabatan", "Riwayat Perkaderan Utama", "Riwayat Perkaderan Khusus", "Status Instruktur", "Alamat Lengkap"];
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{}], {header: headers}), "Template");
             XLSX.writeFile(wb, "Template_Upload_Kader_IMM.xlsx");
         }
@@ -1131,10 +1103,25 @@
                 const workbook = XLSX.read(evt.target.result, {type: 'binary'});
                 const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ""});
                 parsedExcelData = json.map((row, i) => ({
-                    _index: i, nama: row["Nama Lengkap"]||"", wa: row["Nomor WA"]||"", email: row["Email"]||"", nia: row["NIA"]||"",
-                    riwayatPendidikan: row["Riwayat Pendidikan (S1/S2 - Univ - Prodi)"]||"", kaderTahun: row["Kader Tahun"]||"", komisariat: row["Asal Komisariat"]||"",
-                    status: row["Status Keanggotaan"]||"Aktif Komisariat", bidang: row["Bidang"]||"", jabatanBidang: row["Jabatan Bidang"]||"", pelatihan: row["Riwayat Perkaderan Utama"]||"",
-                    perkaderanKhusus: row["Riwayat Perkaderan Khusus"]||"", statusInstruktur: row["Status Instruktur"]||"", alamat: row["Alamat Lengkap"]||"", foto: ""
+                    _index: i, 
+                    nama: row["Nama Lengkap"]||"", 
+                    wa: row["Nomor WA"]||"", 
+                    email: row["Email"]||"", 
+                    nia: row["NIA"]||"",
+                    universitas: row["Universitas"]||"",
+                    fakultas: row["Fakultas"]||"",
+                    programStudi: row["Program Studi"]||"",
+                    kaderTahun: row["Kader Tahun"]||"", 
+                    komisariat: row["Asal Komisariat"]||"",
+                    status: row["Status Keanggotaan"]||"Aktif Komisariat", 
+                    bidang: row["Bidang"]||"", 
+                    jabatanBidang: row["Jabatan"]||row["Jabatan Bidang"]||"", 
+                    pelatihan: row["Riwayat Perkaderan Utama"]||"",
+                    perkaderanKhusus: row["Riwayat Perkaderan Khusus"]||"", 
+                    statusInstruktur: row["Status Instruktur"]||"", 
+                    alamat: row["Alamat Lengkap"]||"", 
+                    riwayatPendidikan: `S1 - ${row["Universitas"]||""} - ${row["Fakultas"]||""} - ${row["Program Studi"]||""}`,
+                    foto: ""
                 }));
                 renderExcelPreview();
             }; reader.readAsBinaryString(file);
@@ -1144,13 +1131,24 @@
             const tbody = document.getElementById('excelPreviewBody'); tbody.innerHTML = ''; let hasError = false;
             if(parsedExcelData.length === 0) { document.getElementById('btnSaveExcel').disabled = true; return; }
             parsedExcelData.forEach((row, i) => {
-                if(!row.nama || !row.wa || !row.riwayatPendidikan || !row.komisariat || !row.kaderTahun) hasError = true;
+                if(!row.nama || !row.wa || !row.komisariat || !row.kaderTahun) hasError = true;
                 tbody.innerHTML += `<tr>
-                    <td class="p-1"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.nama===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.wa===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.riwayatPendidikan}" onchange="updateExcelData(${i}, 'riwayatPendidikan', this.value)" class="w-32 text-xs p-1 border rounded focus:outline-none ${row.riwayatPendidikan===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-24 text-xs p-1 border rounded focus:outline-none ${row.komisariat===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
-                    <td class="p-1"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-16 text-xs p-1 border rounded focus:outline-none ${row.kaderTahun===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1 min-w-[150px]"><input type="text" value="${row.nama}" onchange="updateExcelData(${i}, 'nama', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.nama===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1 min-w-[100px]"><input type="text" value="${row.wa}" onchange="updateExcelData(${i}, 'wa', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.wa===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.email}" onchange="updateExcelData(${i}, 'email', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[100px]"><input type="text" value="${row.nia}" onchange="updateExcelData(${i}, 'nia', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.universitas}" onchange="updateExcelData(${i}, 'universitas', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.fakultas}" onchange="updateExcelData(${i}, 'fakultas', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.programStudi}" onchange="updateExcelData(${i}, 'programStudi', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[80px]"><input type="number" value="${row.kaderTahun}" onchange="updateExcelData(${i}, 'kaderTahun', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.kaderTahun===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.komisariat}" onchange="updateExcelData(${i}, 'komisariat', this.value)" class="w-full text-xs p-1 border rounded focus:outline-none ${row.komisariat===""?"border-red-500 bg-red-50":"border-gray-200"}"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.status}" onchange="updateExcelData(${i}, 'status', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[100px]"><input type="text" value="${row.bidang}" onchange="updateExcelData(${i}, 'bidang', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[100px]"><input type="text" value="${row.jabatanBidang}" onchange="updateExcelData(${i}, 'jabatanBidang', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.pelatihan}" onchange="updateExcelData(${i}, 'pelatihan', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.perkaderanKhusus}" onchange="updateExcelData(${i}, 'perkaderanKhusus', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[120px]"><input type="text" value="${row.statusInstruktur}" onchange="updateExcelData(${i}, 'statusInstruktur', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
+                    <td class="p-1 min-w-[150px]"><input type="text" value="${row.alamat}" onchange="updateExcelData(${i}, 'alamat', this.value)" class="w-full text-xs p-1 border border-gray-200 rounded"></td>
                 </tr>`;
             });
             document.getElementById('btnSaveExcel').disabled = hasError;
